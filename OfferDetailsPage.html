@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Details - SharesHub</title>
+    <style>
+        :root {
+            --primary: #ff8f4d;
+            --secondary: #08acab;
+            --dark: #034249;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #6b7280;
+            .message-box {
+                padding: 20px;
+                margin: 10px;
+                max-height: 95vh;
+            }
+
+            .message-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+
+            .message-title {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+
+            .deposit-amount {
+                font-size: 1.3rem;
+            }
+
+            .payment-steps {
+                text-align: center;
+            }
+
+            .payment-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 6px;
+                padding: 8px;
+            }
+
+            .step-title {
+                font-size: 0.85rem;
+            }
+
+            .step-description {
+                font-size: 0.75rem;
+            }
+
+            .urgency-warning {
+                font-size: 0.8rem;
+                padding: 10px 12px;
+            }
+
+            .phone-input-group {
+                flex-direction: column;
+            }
+
+            .country-code-select {
+                min-width: 100%;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fef7f0 0%, #f0fdfc 50%, #f8fafc 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 120px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .back-btn {
+            /* background: none; */
+            /* border: 2px solid var(--secondary); */
+            color: var(--secondary);
+            padding: 10px 15px;
+            margin-right: 50px; /* remove this when you uncomment the back btn*/
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        /* .back-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(-5px);
+        } */
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Hero Section */
+        .offer-hero {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .hero-desc {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            margin-bottom: 24px;
+        }
+
+        .pricing-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .current-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .original-price {
+            font-size: 1.25rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .supplier-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+
+        .supplier-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Banner Slider Styles */
+        .banner-slider {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slider-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 20px;
+            color: white;
+        }
+
+        .slider-caption {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .slider-description {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation Arrows */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.125rem;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .slider-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .slider-nav.prev {
+            left: 16px;
+        }
+
+        .slider-nav.next {
+            right: 16px;
+        }
+
+        /* Dots Indicator */
+        .slider-dots {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Auto-play indicator */
+        .slider-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width linear;
+            z-index: 10;
+        }
+
+        /* Responsive Design for Slider */
+        @media (max-width: 768px) {
+            .banner-slider {
+                height: 250px;
+            }
+
+            .slider-nav {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .slider-nav.prev {
+                left: 12px;
+            }
+
+            .slider-nav.next {
+                right: 12px;
+            }
+
+            .slider-overlay {
+                padding: 16px;
+            }
+
+            .slider-caption {
+                font-size: 0.8rem;
+            }
+
+            .slider-description {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Content Cards */
+        .offer-contents {
+            display: grid;
+            gap: 24px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .content-desc {
+            color: var(--gray-600);
+            margin-bottom: 12px;
+        }
+
+        .content-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .progress-info {
+            text-align: right;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 120px;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Quantity Selector */
+        .quantity-section {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quantity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .quantity-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover:not(:disabled) {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quantity-display {
+            background: white;
+            border: 1px solid var(--gray-200);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: var(--dark);
+            min-width: 60px;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+
+        /* Applied Price Display */
+        .applied-price {
+            background: linear-gradient(135deg, rgba(8, 172, 171, 0.1), rgba(255, 143, 77, 0.1));
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .applied-price-amount {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .applied-tier-info {
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+
+        /* Pricing Tiers */
+        .pricing-tiers {
+            margin-top: 24px;
+        }
+
+        .tier-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .tier-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 143, 77, 0.05), rgba(8, 172, 171, 0.05));
+        }
+
+        .tier-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 4px 16px rgba(8, 172, 171, 0.2);
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .tier-quantity {
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 1.125rem;
+        }
+
+        .tier-pricing {
+            text-align: right;
+        }
+
+        .tier-current-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .tier-original-price {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+        }
+
+        .tier-savings {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 24px 24px 0 24px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .modal-body {
+            padding: 0 24px 24px 24px;
+        }
+
+        /* Enhanced Order Summary Styles */
+        .order-summary {
+            background: linear-gradient(135deg, rgba(8, 172, 171, 0.05), rgba(255, 143, 77, 0.05));
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .order-summary-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-details {
+            flex: 1;
+        }
+
+        .order-item-name {
+            color: var(--dark);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .order-item-pricing {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .original-price-small {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .discounted-price {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Summary Totals */
+        .summary-totals {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid var(--gray-200);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.9rem;
+        }
+
+        .summary-row.highlight {
+            background: rgba(255, 143, 77, 0.1);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-weight: 600;
+        }
+
+        .summary-row.total {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--dark);
+            border-top: 2px solid var(--gray-300);
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+
+        .summary-label {
+            color: var(--gray-600);
+        }
+
+        .summary-value {
+            font-weight: 600;
+        }
+
+        .deposit-value {
+            color: var(--primary);
+        }
+
+        .remaining-value {
+            color: var(--secondary);
+        }
+
+        .summary-note {
+            background: var(--gray-50);
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            margin-top: 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: #ef4444;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(8, 172, 171, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Modal Actions */
+        .modal-actions {
+            padding: 20px 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(255, 143, 77, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(255, 143, 77, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading state for modal */
+        .modal-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .modal-loading .spinner {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Fixed Bottom */
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            padding: 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+
+        .bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .total-summary {
+            flex: 1;
+        }
+
+        .total-items {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .join-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(255, 143, 77, 0.3);
+        }
+
+        .join-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 143, 77, 0.4);
+        }
+
+        .join-btn:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Terms */
+        .terms {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .terms h3 {
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 1.125rem;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-100);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Phone Input with Country Code */
+        .phone-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .country-code-select {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 12px 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 80px;
+        }
+
+        .country-code-select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(8, 172, 171, 0.1);
+        }
+
+        .country-code-select.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .phone-number-input {
+            flex: 1;
+        }
+
+        /* Message Styles */
+        .message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .message-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-box {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+            margin: auto;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .message-overlay.active .message-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .message-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        .message-icon.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .message-icon.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .message-title {
+            font-size: 1.375rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .message-content {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .order-number-section {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .order-number-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .deposit-highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .deposit-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .deposit-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .urgency-warning {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .urgency-icon {
+            font-size: 1.125rem;
+        }
+
+        .payment-info {
+            background: linear-gradient(135deg, rgba(8, 172, 171, 0.1), rgba(255, 143, 77, 0.1));
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .payment-steps {
+            text-align: left;
+            margin: 12px 0;
+        }
+
+        .payment-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+        }
+
+        .step-description {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        .phone-highlight {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .message-close-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(255, 143, 77, 0.3);
+            margin-top: 8px;
+        }
+
+        .message-close-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(255, 143, 77, 0.4);
+        }
+
+        /* Responsive Design for Messages */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 24px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-image {
+                height: 250px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+
+            .progress-info {
+                text-align: left;
+            }
+
+            .progress-bar {
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .content-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tier-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quantity-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .quantity-controls {
+                justify-content: center;
+            }
+
+            .bottom-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .join-btn {
+                width: 100%;
+            }
+
+            .supplier-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+
+            .pricing-summary {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .modal {
+                max-width: 95vw;
+                margin: 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .current-price {
+                font-size: 1.5rem;
+            }
+
+            .content-title {
+                font-size: 1.25rem;
+            }
+
+            .offer-hero,
+            .content-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <!-- <button class="back-btn" onclick="goBack()">← Back</button> -->
+             <span class="back-btn"></span>
+            <img src="./SharesHub_Logo.jfif" alt="SharesHub Logo" class="logo" 
+                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23ff8f4d\'/%3E%3Ctext x=\'50\' y=\'55\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ESH%3C/text%3E%3C/svg%3E';">
+            <h1 class="header-title">Offer Details</h1>
+        </div>
+
+        <!-- Content -->
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="color: var(--dark);">Loading offer details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixed Bottom -->
+    <div class="fixed-bottom" id="fixedBottom">
+        <div class="bottom-content">
+            <div class="total-summary">
+                <div class="total-items" id="totalItems">0 items selected</div>
+                <div class="total-price" id="totalPrice">EGP 0.00</div>
+            </div>
+            <button class="join-btn" id="joinBtn" onclick="joinOffer()" disabled>
+                Join Group
+            </button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+                <h2 class="modal-title">Complete Your Order</h2>
+                <p class="modal-subtitle">Please fill in your delivery information to join this group deal</p>
+            </div>
+
+            <div class="modal-body">
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3 class="order-summary-title">📋 Order Summary</h3>
+                    <div id="orderSummaryItems"></div>
+                </div>
+
+                <!-- Order Form -->
+                <form id="orderForm">
+                    <!-- Shipping Address Section -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            🏠 Shipping Address
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label required">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                                <div class="error-message" id="firstName-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName" class="form-label required">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                                <div class="error-message" id="lastName-error"></div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input">
+                                <div class="error-message" id="email-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phoneNumber" class="form-label required">Phone Number</label>
+                                <div class="phone-input-group">
+                                    <select id="phoneCountryCode" name="phoneCountryCode" class="country-code-select" required>
+                                        <option value="+20">🇪🇬 +20</option>
+                                        <option value="+1">🇺🇸 +1</option>
+                                        <option value="+44">🇬🇧 +44</option>
+                                        <option value="+33">🇫🇷 +33</option>
+                                        <option value="+49">🇩🇪 +49</option>
+                                        <option value="+39">🇮🇹 +39</option>
+                                        <option value="+34">🇪🇸 +34</option>
+                                        <option value="+86">🇨🇳 +86</option>
+                                        <option value="+91">🇮🇳 +91</option>
+                                        <option value="+81">🇯🇵 +81</option>
+                                        <option value="+82">🇰🇷 +82</option>
+                                        <option value="+971">🇦🇪 +971</option>
+                                        <option value="+966">🇸🇦 +966</option>
+                                        <option value="+965">🇰🇼 +965</option>
+                                        <option value="+974">🇶🇦 +974</option>
+                                        <option value="+973">🇧🇭 +973</option>
+                                        <option value="+968">🇴🇲 +968</option>
+                                        <option value="+962">🇯🇴 +962</option>
+                                        <option value="+961">🇱🇧 +961</option>
+                                    </select>
+                                    <input type="tel" id="phoneNumber" name="phoneNumber" class="form-input phone-number-input" placeholder="1234567890" required>
+                                </div>
+                                <div class="error-message" id="phoneNumber-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mobileNumber" class="form-label">Mobile Number (if different)</label>
+                                <div class="phone-input-group">
+                                    <select id="mobileCountryCode" name="mobileCountryCode" class="country-code-select">
+                                        <option value="+20">🇪🇬 +20</option>
+                                        <option value="+1">🇺🇸 +1</option>
+                                        <option value="+44">🇬🇧 +44</option>
+                                        <option value="+33">🇫🇷 +33</option>
+                                        <option value="+49">🇩🇪 +49</option>
+                                        <option value="+39">🇮🇹 +39</option>
+                                        <option value="+34">🇪🇸 +34</option>
+                                        <option value="+86">🇨🇳 +86</option>
+                                        <option value="+91">🇮🇳 +91</option>
+                                        <option value="+81">🇯🇵 +81</option>
+                                        <option value="+82">🇰🇷 +82</option>
+                                        <option value="+971">🇦🇪 +971</option>
+                                        <option value="+966">🇸🇦 +966</option>
+                                        <option value="+965">🇰🇼 +965</option>
+                                        <option value="+974">🇶🇦 +974</option>
+                                        <option value="+973">🇧🇭 +973</option>
+                                        <option value="+968">🇴🇲 +968</option>
+                                        <option value="+962">🇯🇴 +962</option>
+                                        <option value="+961">🇱🇧 +961</option>
+                                    </select>
+                                    <input type="tel" id="mobileNumber" name="mobileNumber" class="form-input phone-number-input" placeholder="1234567890">
+                                </div>
+                                <div class="error-message" id="mobileNumber-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="country" class="form-label required">Country</label>
+                                <input type="text" id="country" name="country" class="form-input" value="Egypt" required>
+                                <div class="error-message" id="country-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="state" class="form-label required">State/Governorate</label>
+                                <input type="text" id="state" name="state" class="form-input" required>
+                                <div class="error-message" id="state-error"></div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="street" class="form-label required">Street Address</label>
+                                <input type="text" id="street" name="street" class="form-input" required>
+                                <div class="error-message" id="street-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="building" class="form-label required">Building Number</label>
+                                <input type="text" id="building" name="building" class="form-input" required>
+                                <div class="error-message" id="building-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="apartment" class="form-label required">Apartment Number</label>
+                                <input type="text" id="apartment" name="apartment" class="form-input" required>
+                                <div class="error-message" id="apartment-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="floor" class="form-label required">Floor</label>
+                                <input type="text" id="floor" name="floor" class="form-input" required>
+                                <div class="error-message" id="floor-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="zipCode" class="form-label">Zip Code</label>
+                                <input type="text" id="zipCode" name="zipCode" class="form-input">
+                                <div class="error-message" id="zipCode-error"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeOrderModal()">Cancel</button>
+                <button type="button" class="btn-primary" id="submitOrderBtn" onclick="submitOrder()">
+                    Place Order
+                </button>
+            </div>
+
+            <!-- Loading overlay -->
+            <div class="modal-loading" id="modalLoading" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Message Modal -->
+    <div class="message-overlay" id="messageModal">
+        <div class="message-box">
+            <div class="message-icon" id="messageIcon">
+                <span id="messageIconText">✓</span>
+            </div>
+            <h2 class="message-title" id="messageTitle">Success!</h2>
+            <div class="message-content" id="messageContent"></div>
+            <button class="message-close-btn" onclick="closeMessageModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let offerData = null;
+        let selectedQuantities = {};
+
+        // Mock Data
+        const mockOfferData = {
+            succeeded: true,
+            data: {
+                title: "55% off @ABC GYM",
+                desc: "One year subscription with 55% off ABC GYM, Heliopolis! Only EGP 199 instead of EGP 446",
+                discount: 55,
+                currentPrice: 199,
+                originalPrice: 446,
+                mainImageUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+                termsOfUse: "Terms of use: Valid for 12 months from purchase date. Cannot be combined with other offers. Membership includes access to all gym facilities and group classes.",
+                supplier: {
+                    name: "SharesHub",
+                    fullAddress: "Giza, October",
+                    logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop"
+                },
+                offerContents: [
+                    {
+                        id: 1,
+                        title: "One year subscription with the value of EGP 1400",
+                        desc: "Games package coupon with the value of EGP 1400",
+                        originalPrice: 1500,
+                        expirationDate: "2025-06-05T00:00:00",
+                        numberOfApplicants: 5,
+                        maxQuantity: 10,
+                        maxQuantityPerUser: 2,
+                        pricingTiers: [
+                            {
+                                id: 1,
+                                quantity: 3,
+                                title: "When collecting",
+                                currentPrice: 700,
+                                originalPrice: 1500
+                            },
+                            {
+                                id: 2,
+                                quantity: 5,
+                                title: "When collecting",
+                                currentPrice: 600,
+                                originalPrice: 1500
+                            },
+                            {
+                                id: 3,
+                                quantity: 10,
+                                title: "When collecting",
+                                currentPrice: 500,
+                                originalPrice: 1500
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        title: "6-month subscription with the value of EGP 1400",
+                        desc: "Description of the second offer content",
+                        originalPrice: 1200,
+                        expirationDate: "2025-06-07T11:00:00",
+                        numberOfApplicants: 3,
+                        maxQuantity: 10,
+                        maxQuantityPerUser: 5,
+                        pricingTiers: [
+                            {
+                                id: 10002,
+                                quantity: 3,
+                                title: "When collecting",
+                                currentPrice: 650,
+                                originalPrice: 1200
+                            },
+                            {
+                                id: 10003,
+                                quantity: 5,
+                                title: "When collecting",
+                                currentPrice: 550,
+                                originalPrice: 1200
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Utility Functions
+        function formatPrice(price) {
+            return `EGP ${parseFloat(price).toFixed(2)}`;
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function calculateSavings(currentPrice, originalPrice) {
+            const savings = ((originalPrice - currentPrice) / originalPrice * 100).toFixed(0);
+            return `Save ${savings}%`;
+        }
+
+        function getOfferIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || '4';
+        }
+
+        // Core Business Logic
+        function getApplicableTier(content, quantity) {
+            if (quantity === 0) return null;
+            
+            // Calculate total group size: existing applicants + selected quantity
+            const totalGroupSize = content.numberOfApplicants + quantity;
+            const sortedTiers = [...content.pricingTiers].sort((a, b) => a.quantity - b.quantity);
+            let applicableTier = null;
+            
+            // Find the highest tier that the total group size qualifies for
+            for (const tier of sortedTiers) {
+                if (totalGroupSize >= tier.quantity) {
+                    applicableTier = tier;
+                }
+            }
+            
+            return applicableTier || sortedTiers[0];
+        }
+
+        function updateQuantity(contentId, change) {
+            const content = offerData.data.offerContents.find(c => c.id === contentId);
+            const currentQty = selectedQuantities[contentId] || 0;
+            const newQty = Math.max(0, Math.min(content.maxQuantityPerUser, currentQty + change));
+            
+            if (newQty !== currentQty) {
+                selectedQuantities[contentId] = newQty;
+                updateUI();
+                updateTotalSummary();
+                
+                // Initialize slider after content is rendered
+                setTimeout(() => {
+                    initSliderEvents();
+                    startAutoPlay();
+                }, 500);
+            }
+        }
+
+        function updateUI() {
+            offerData.data.offerContents.forEach(content => {
+                const contentId = content.id;
+                const quantity = selectedQuantities[contentId] || 0;
+                const applicableTier = getApplicableTier(content, quantity);
+                
+                // Update quantity display
+                const qtyDisplay = document.getElementById(`qty-${contentId}`);
+                const minusBtn = document.getElementById(`minus-${contentId}`);
+                const plusBtn = document.getElementById(`plus-${contentId}`);
+                
+                if (qtyDisplay) qtyDisplay.textContent = quantity;
+                if (minusBtn) minusBtn.disabled = quantity <= 0;
+                if (plusBtn) plusBtn.disabled = quantity >= content.maxQuantityPerUser;
+                
+                // Update tier highlighting
+                content.pricingTiers.forEach(tier => {
+                    const tierCard = document.getElementById(`tier-${tier.id}`);
+                    if (tierCard) {
+                        tierCard.classList.toggle('active', applicableTier && tier.id === applicableTier.id);
+                    }
+                });
+                
+                // Update applied price
+                const appliedPriceEl = document.getElementById(`applied-price-${contentId}`);
+                if (appliedPriceEl) {
+                    if (quantity > 0 && applicableTier) {
+                        const totalPrice = quantity * applicableTier.currentPrice;
+                        const totalGroupSize = content.numberOfApplicants + quantity;
+                        appliedPriceEl.innerHTML = `
+                            <div class="applied-price-amount">
+                                ${quantity} × ${formatPrice(applicableTier.currentPrice)} = ${formatPrice(totalPrice)}
+                            </div>
+                            <div class="applied-tier-info">
+                                Applied tier: ${applicableTier.quantity}+ units (group size: ${totalGroupSize})
+                            </div>
+                        `;
+                        appliedPriceEl.style.display = 'block';
+                    } else {
+                        appliedPriceEl.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function updateTotalSummary() {
+            let totalItems = 0;
+            let totalPrice = 0;
+            
+            offerData.data.offerContents.forEach(content => {
+                const quantity = selectedQuantities[content.id] || 0;
+                if (quantity > 0) {
+                    const applicableTier = getApplicableTier(content, quantity);
+                    if (applicableTier) {
+                        totalItems += quantity;
+                        totalPrice += quantity * applicableTier.currentPrice;
+                    }
+                }
+            });
+            
+            document.getElementById('totalItems').textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''} selected`;
+            document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+            document.getElementById('joinBtn').disabled = totalItems === 0;
+            
+            const fixedBottom = document.getElementById('fixedBottom');
+            fixedBottom.style.display = totalItems > 0 ? 'block' : 'none';
+        }
+
+        // UI Generation Functions
+        function createTierCard(tier) {
+            const savings = calculateSavings(tier.currentPrice, tier.originalPrice);
+            
+            return `
+                <div class="tier-card" id="tier-${tier.id}">
+                    <div class="tier-header">
+                        <div class="tier-quantity">${tier.quantity}+ units</div>
+                        <div class="tier-pricing">
+                            <div class="tier-current-price">${formatPrice(tier.currentPrice)}</div>
+                            <div class="tier-original-price">${formatPrice(tier.originalPrice)}</div>
+                            <div class="tier-savings">${savings}</div>
+                        </div>
+                    </div>
+                    <div style="color: var(--gray-600); font-size: 0.875rem;">${tier.title}</div>
+                </div>
+            `;
+        }
+
+        function createContentCard(content) {
+            const progress = (content.numberOfApplicants / content.maxQuantity) * 100;
+            const tiersHTML = content.pricingTiers.map(tier => createTierCard(tier)).join('');
+            
+            return `
+                <div class="content-card">
+                    <div class="content-header">
+                        <div>
+                            <h3 class="content-title">${content.title}</h3>
+                            <p class="content-desc">${content.desc}</p>
+                            <div class="content-meta">
+                                <div class="meta-item">
+                                    <span>📅</span>
+                                    <span>Expires: ${formatDate(content.expirationDate)}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>👥</span>
+                                    <span>Max per user: ${content.maxQuantityPerUser}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>📦</span>
+                                    <span>Total available: ${content.maxQuantity}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-info">
+                            <div class="progress-text">${content.numberOfApplicants}/${content.maxQuantity} joined</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quantity-section">
+                        <div class="quantity-header">
+                            <span class="quantity-label">How many do you want?</span>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" id="minus-${content.id}" onclick="updateQuantity(${content.id}, -1)">-</button>
+                                <div class="quantity-display" id="qty-${content.id}">0</div>
+                                <button class="quantity-btn" id="plus-${content.id}" onclick="updateQuantity(${content.id}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="applied-price" id="applied-price-${content.id}" style="display: none;"></div>
+                    
+                    <div class="pricing-tiers">
+                        <h4 class="tier-title">Pricing Tiers (based on total group size including existing ${content.numberOfApplicants} applicants):</h4>
+                        <div class="tier-grid">
+                            ${tiersHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOfferDetails(data) {
+            const offer = data.data;
+            const contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
+            
+            return `
+                <div class="offer-hero">
+                    <div class="hero-content">
+                        <div>
+                            <h1 class="hero-title">${offer.title}</h1>
+                            <p class="hero-desc">${offer.desc}</p>
+                            <div class="pricing-summary">
+                                <span class="current-price">${formatPrice(offer.currentPrice)}</span>
+                                <span class="original-price">${formatPrice(offer.originalPrice)}</span>
+                                <span class="discount-badge">-${offer.discount}%</span>
+                            </div>
+                            <div class="supplier-info">
+                                <img src="${offer.supplier.logo}" alt="${offer.supplier.name}" class="supplier-logo" 
+                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Ccircle cx=\\'50\\' cy=\\'50\\' r=\\'45\\' fill=\\'%23ff8f4d\\'/%3E%3Ctext x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'16\\' font-weight=\\'bold\\'%3E${offer.supplier.name.charAt(0)}%3C/text%3E%3C/svg%3E'">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--dark);">${offer.supplier.name}</div>
+                                    <div style="font-size: 0.875rem; color: var(--gray-600);">${offer.supplier.fullAddress}</div>
+                                </div>
+                            </div>
+                        </div>
+                        ${createBannerSlider(offer)}
+                    </div>
+                </div>
+                
+                <div class="offer-contents">
+                    ${contentsHTML}
+                </div>
+                
+                ${offer.termsOfUse ? `
+                    <div class="terms">
+                        <h3>Terms of Use</h3>
+                        <p>${offer.termsOfUse}</p>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        // Banner Slider Functions
+        let currentSlide = 0;
+        let slideInterval;
+        let isAutoPlaying = true;
+        const autoPlayDelay = 4000; // 4 seconds
+
+        function createBannerSlider(offer) {
+            // Create multiple images for the slider (you can modify these URLs)
+            const sliderImages = [
+                {
+                    url: offer.mainImageUrl,
+                    caption: offer.title,
+                    description: "Main offer image"
+                },
+                {
+                    url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop",
+                    caption: "Fitness Equipment",
+                    description: "State-of-the-art equipment available"
+                },
+                {
+                    url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+                    caption: "Training Area",
+                    description: "Spacious training facilities"
+                },
+                {
+                    url: "https://images.unsplash.com/photo-1549476464-37392f717541?w=600&h=400&fit=crop",
+                    caption: "Group Classes",
+                    description: "Various group training sessions"
+                }
+            ];
+
+            const slidesHTML = sliderImages.map((image, index) => `
+                <div class="slider-slide">
+                    <img src="${image.url}" alt="${image.caption}" class="slider-image">
+                    <div class="slider-overlay">
+                        <div class="slider-caption">${image.caption}</div>
+                        <div class="slider-description">${image.description}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            const dotsHTML = sliderImages.map((_, index) => `
+                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+            `).join('');
+
+            return `
+                <div class="banner-slider">
+                    <div class="slider-progress" id="sliderProgress"></div>
+                    <div class="slider-container">
+                        <div class="slider-track" id="sliderTrack">
+                            ${slidesHTML}
+                        </div>
+                    </div>
+                    <button class="slider-nav prev" onclick="previousSlide()">❮</button>
+                    <button class="slider-nav next" onclick="nextSlide()">❯</button>
+                    <div class="slider-dots">
+                        ${dotsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        function goToSlide(slideIndex) {
+            const sliderTrack = document.getElementById('sliderTrack');
+            const dots = document.querySelectorAll('.slider-dot');
+            const totalSlides = dots.length;
+
+            currentSlide = slideIndex;
+            
+            // Update slider position
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            // Reset auto-play
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            const totalSlides = document.querySelectorAll('.slider-slide').length;
+            const nextIndex = (currentSlide + 1) % totalSlides;
+            goToSlide(nextIndex);
+        }
+
+        function previousSlide() {
+            const totalSlides = document.querySelectorAll('.slider-slide').length;
+            const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+            goToSlide(prevIndex);
+        }
+
+        function startAutoPlay() {
+            if (isAutoPlaying) {
+                slideInterval = setInterval(() => {
+                    nextSlide();
+                }, autoPlayDelay);
+                
+                // Update progress bar
+                updateProgressBar();
+            }
+        }
+
+        function stopAutoPlay() {
+            if (slideInterval) {
+                clearInterval(slideInterval);
+            }
+            
+            const progressBar = document.getElementById('sliderProgress');
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
+        }
+
+        function resetAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('sliderProgress');
+            if (progressBar) {
+                progressBar.style.width = '0%';
+                progressBar.style.transition = 'none';
+                
+                setTimeout(() => {
+                    progressBar.style.transition = `width ${autoPlayDelay}ms linear`;
+                    progressBar.style.width = '100%';
+                }, 50);
+            }
+        }
+
+        // Pause auto-play on hover
+        function initSliderEvents() {
+            const slider = document.querySelector('.banner-slider');
+            if (slider) {
+                slider.addEventListener('mouseenter', stopAutoPlay);
+                slider.addEventListener('mouseleave', startAutoPlay);
+                
+                // Touch events for mobile
+                let startX = 0;
+                let endX = 0;
+                
+                slider.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    stopAutoPlay();
+                });
+                
+                slider.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+                    
+                    if (Math.abs(diff) > 50) { // Minimum swipe distance
+                        if (diff > 0) {
+                            nextSlide();
+                        } else {
+                            previousSlide();
+                        }
+                    }
+                    
+                    startAutoPlay();
+                });
+            }
+        }
+        function openOrderModal() {
+            const selectedItems = getSelectedItems();
+            
+            if (selectedItems.length === 0) {
+                showMessage('error', 'No Items Selected', 'Please select at least one item to join the group.');
+                return;
+            }
+            
+            // Update order summary
+            updateOrderSummary(selectedItems);
+            
+            // Show modal
+            const modal = document.getElementById('orderModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus first input
+            setTimeout(() => {
+                document.getElementById('firstName').focus();
+            }, 300);
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Clear form errors
+            clearFormErrors();
+        }
+
+        // Enhanced updateOrderSummary function with detailed pricing breakdown
+        function updateOrderSummary(selectedItems) {
+            const summaryContainer = document.getElementById('orderSummaryItems');
+            let summaryHTML = '';
+            let totalOriginalPrice = 0;
+            let totalDiscountedPrice = 0;
+            
+            // Generate order items with detailed pricing
+            selectedItems.forEach(item => {
+                const content = offerData.data.offerContents.find(c => c.id === item.contentId);
+                const originalPricePerUnit = content.originalPrice;
+                const discountedPricePerUnit = item.appliedTier.pricePerUnit;
+                const itemOriginalTotal = item.quantity * originalPricePerUnit;
+                const itemDiscountedTotal = item.totalPrice;
+                
+                totalOriginalPrice += itemOriginalTotal;
+                totalDiscountedPrice += itemDiscountedTotal;
+                
+                summaryHTML += `
+                    <div class="order-item">
+                        <div class="order-item-details">
+                            <div class="order-item-name">${item.quantity}x ${item.contentTitle}</div>
+                        </div>
+                        <div class="order-item-pricing">
+                            <span class="original-price-small">${formatPrice(itemOriginalTotal)}</span>
+                            <span class="discounted-price">${formatPrice(itemDiscountedTotal)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Calculate deposit (30% of total original price)
+            const depositAmount = totalOriginalPrice * 0.3;
+            const remainingAmount = totalDiscountedPrice - depositAmount;
+            
+            // Add summary totals section
+            summaryHTML += `
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span class="summary-label">Total Original Price:</span>
+                        <span class="summary-value">${formatPrice(totalOriginalPrice)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Total Discounted Price:</span>
+                        <span class="summary-value">${formatPrice(totalDiscountedPrice)}</span>
+                    </div>
+                    <div class="summary-row highlight">
+                        <span class="summary-label">Deposit (30% of Original):</span>
+                        <span class="summary-value deposit-value">${formatPrice(depositAmount)}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span class="summary-label">Remaining Amount:</span>
+                        <span class="summary-value remaining-value">${formatPrice(remainingAmount)}</span>
+                    </div>
+                </div>
+                <div class="summary-note">
+                    <strong>Note:</strong> The remaining amount shown is an estimate based on the current applied price tier and may change until the offer is considered completed.
+                </div>
+            `;
+            
+            summaryContainer.innerHTML = summaryHTML;
+        }
+
+        function getSelectedItems() {
+            const selectedItems = [];
+            
+            offerData.data.offerContents.forEach(content => {
+                const quantity = selectedQuantities[content.id] || 0;
+                if (quantity > 0) {
+                    const applicableTier = getApplicableTier(content, quantity);
+                    if (applicableTier) {
+                        selectedItems.push({
+                            contentId: content.id,
+                            quantity: quantity,
+                            contentTitle: content.title,
+                            appliedTier: {
+                                id: applicableTier.id,
+                                minQuantity: applicableTier.quantity,
+                                pricePerUnit: applicableTier.currentPrice
+                            },
+                            totalPrice: quantity * applicableTier.currentPrice,
+                            originalPrice: content.originalPrice,
+                            discountedPrice: applicableTier.currentPrice
+                        });
+                    }
+                }
+            });
+            
+            return selectedItems;
+        }
+
+        // Form Validation Functions
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = [
+                'firstName', 'lastName', 'phoneNumber', 'country', 
+                'state', 'street', 'building', 'apartment', 'floor'
+            ];
+            
+            // Clear previous errors
+            clearFormErrors();
+            
+            requiredFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                const value = field.value.trim();
+                
+                if (!value) {
+                    showFieldError(fieldName, 'This field is required');
+                    isValid = false;
+                } else {
+                    // Additional validation for specific fields
+                    if (fieldName === 'phoneNumber' || fieldName === 'mobileNumber') {
+                        if (value && !isValidPhoneNumber(value)) {
+                            showFieldError(fieldName, 'Please enter a valid phone number');
+                            isValid = false;
+                        }
+                    }
+                    
+                    if (fieldName === 'email' && value) {
+                        if (!isValidEmail(value)) {
+                            showFieldError('email', 'Please enter a valid email address');
+                            isValid = false;
+                        }
+                    }
+                }
+            });
+            
+            // Validate email if provided
+            const email = document.getElementById('email').value.trim();
+            if (email && !isValidEmail(email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function showFieldError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const errorElement = document.getElementById(`${fieldName}-error`);
+            
+            if (field) field.classList.add('error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+        }
+
+        function clearFormErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            const inputElements = document.querySelectorAll('.form-input');
+            
+            errorElements.forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+            
+            inputElements.forEach(el => {
+                el.classList.remove('error');
+            });
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhoneNumber(phone) {
+            // Basic phone validation - digits only, 7-15 characters
+            const phoneRegex = /^[\d]{7,15}$/;
+            return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
+        }
+
+        // Message Display Functions
+        function showMessage(type, title, content) {
+            const messageModal = document.getElementById('messageModal');
+            const messageIcon = document.getElementById('messageIcon');
+            const messageIconText = document.getElementById('messageIconText');
+            const messageTitle = document.getElementById('messageTitle');
+            const messageContent = document.getElementById('messageContent');
+            
+            // Set icon and styling based on type
+            if (type === 'success') {
+                messageIcon.className = 'message-icon success';
+                messageIconText.textContent = '✓';
+            } else if (type === 'error') {
+                messageIcon.className = 'message-icon error';
+                messageIconText.textContent = '✕';
+            }
+            
+            messageTitle.textContent = title;
+            messageContent.innerHTML = content;
+            
+            // Show message modal
+            messageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMessageModal() {
+            const messageModal = document.getElementById('messageModal');
+            messageModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showSuccessMessage(deposit = null, orderNumber = null) {
+            // Generate order number if not provided (for demo purposes)
+            const displayOrderNumber = orderNumber || `SH${Date.now().toString().slice(-8)}`;
+            
+            const content = `
+                <p style="margin-bottom: 16px;">Your order has been placed successfully! To complete your reservation, please follow these steps:</p>
+                
+                <div class="order-number-section">
+                    <div class="order-number-label">Your Order Number</div>
+                    <div class="order-number-value">#${displayOrderNumber}</div>
+                </div>
+                
+                <div class="deposit-highlight">
+                    <div class="deposit-amount">${deposit || 0} LE</div>
+                    <div class="deposit-label">Required Deposit Amount</div>
+                </div>
+                
+                <div class="urgency-warning">
+                    <span class="urgency-icon">⚠️</span>
+                    <span>Payment must be completed within 1 HOUR to secure your reservation!</span>
+                </div>
+                
+                <div class="payment-info">
+                    <div class="payment-steps">
+                        <div class="payment-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Pay the Deposit (${deposit || 0} LE)</div>
+                                <div class="step-description">Pay exactly <strong>${deposit || 0} LE</strong> using InstaPay to: <span class="phone-highlight">01118313501</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Send Payment Screenshot</div>
+                                <div class="step-description">Send a clear screenshot of the transfer confirmation to <span class="phone-highlight">01118313501</span> via WhatsApp. <strong>Include your order number: #${displayOrderNumber}</strong></div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Confirmation</div>
+                                <div class="step-description">You will receive a confirmation message once your payment is verified</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--gray-600); line-height: 1.4;">
+                    <strong>Important:</strong> Your reservation will be confirmed only after payment verification. You have exactly <strong>1 hour</strong> from now to complete the payment, or your spot will be released to other customers. Please reference order number <strong>#${displayOrderNumber}</strong> in all communications.
+                </p>
+            `;
+            
+            showMessage('success', 'Order Placed Successfully!', content);
+        }
+
+        // Order Submission Functions
+        async function submitOrder() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            const selectedItems = getSelectedItems();
+            if (selectedItems.length === 0) {
+                showMessage('error', 'No Items Selected', 'No items selected. Please close this modal and select items first.');
+                return;
+            }
+            
+            // Show loading
+            const submitBtn = document.getElementById('submitOrderBtn');
+            const modalLoading = document.getElementById('modalLoading');
+            submitBtn.disabled = true;
+            modalLoading.style.display = 'flex';
+            
+            try {
+                const orderData = buildOrderData(selectedItems);
+                console.log('Order data:', orderData);
+                
+                // Submit order to API
+                const result = await submitOrderToAPI(orderData);
+                
+                if (result.success) {
+                    // Show success message with order number
+                    const orderNumber = result.data?.orderId || result.data?.orderNumber;
+                    const deposit = result.data?.deposit || 200;
+                    showSuccessMessage(deposit, orderNumber);
+                    closeOrderModal();
+                    
+                    // Reset selections
+                    Object.keys(selectedQuantities).forEach(key => {
+                        selectedQuantities[key] = 0;
+                    });
+                    updateUI();
+                    updateTotalSummary();
+                } else {
+                    throw new Error(result.message || 'Failed to place order');
+                }
+                
+            } catch (error) {
+                console.error('Order submission error:', error);
+                showMessage('error', 'Order Failed', `Failed to place order: ${error.message}<br><br>Please try again or contact support if the problem persists.`);
+            } finally {
+                // Hide loading
+                submitBtn.disabled = false;
+                modalLoading.style.display = 'none';
+            }
+        }
+
+        function buildOrderData(selectedItems) {
+            // Get form data
+            const formData = new FormData(document.getElementById('orderForm'));
+            const formObject = Object.fromEntries(formData.entries());
+            
+            // Build phone numbers with country codes
+            const phoneCountryCode = document.getElementById('phoneCountryCode').value;
+            const mobileCountryCode = document.getElementById('mobileCountryCode').value;
+            const phoneNumber = formObject.phoneNumber ? phoneCountryCode + formObject.phoneNumber : '';
+            const mobileNumber = formObject.mobileNumber ? mobileCountryCode + formObject.mobileNumber : '';
+            
+            // Build the order object according to API requirements
+            return {
+                shipToAddress: {
+                    apartment: formObject.apartment,
+                    firstName: formObject.firstName,
+                    lastName: formObject.lastName,
+                    street: formObject.street,
+                    building: formObject.building,
+                    phoneNumber: phoneNumber,
+                    country: formObject.country,
+                    email: formObject.email || '',
+                    floor: formObject.floor,
+                    state: formObject.state,
+                    zipCode: formObject.zipCode || ''
+                },
+                mobileNumber: mobileNumber || phoneNumber,
+                offerContents: selectedItems.map(item => ({
+                    offerContentId: item.contentId,
+                    quantity: item.quantity
+                }))
+            };
+        }
+
+        async function submitOrderToAPI(orderData) {
+            try {
+                // Uncomment this when your API is ready
+                // const url = 'https://localhost:7255/api/Orders/place-validation-order';
+                const url = 'https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Orders/place-validation-order';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.succeeded) {
+                    return { success: true, data: result.data };
+                } else {
+                    throw new Error(result.message || 'Failed to submit order');
+                }
+                
+                
+                // Mock API call for demonstration
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        // Simulate successful order submission
+                        resolve({ 
+                            success: true, 
+                            data: { 
+                                orderId: 'ORDER-' + Date.now(),
+                                message: 'Order placed successfully' 
+                            } 
+                        });
+                    }, 2000);
+                });
+                
+            } catch (error) {
+                throw new Error('Network error: ' + error.message);
+            }
+        }
+
+        // Event Handlers
+        function goBack() {
+            window.history.back();
+        }
+
+        function joinOffer() {
+            openOrderModal();
+        }
+
+        // API Functions
+        async function fetchOfferDetails(offerId) {
+            try {
+                // Uncomment this when your API is ready
+                
+                const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Offers/${offerId}/details`;
+                // const url = `https://localhost:7255/api/Offers/${offerId}/details`
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                if (result.succeeded) {
+                    return result;
+                } else {
+                    throw new Error(result.message || 'Failed to fetch offer details');
+                }
+                
+                
+                // Using mock data for demonstration
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(mockOfferData);
+                    }, 1000);
+                });
+                
+            } catch (error) {
+                throw new Error('Failed to load offer details: ' + error.message);
+            }
+        }
+
+        // Close modal when clicking outside (for both modals)
+        document.addEventListener('click', function(event) {
+            const orderModal = document.getElementById('orderModal');
+            const messageModal = document.getElementById('messageModal');
+            
+            if (event.target === orderModal) {
+                closeOrderModal();
+            }
+            
+            if (event.target === messageModal) {
+                closeMessageModal();
+            }
+        });
+
+        // Close modal with Escape key (for both modals)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const orderModal = document.getElementById('orderModal');
+                const messageModal = document.getElementById('messageModal');
+                
+                if (orderModal.classList.contains('active')) {
+                    closeOrderModal();
+                } else if (messageModal.classList.contains('active')) {
+                    closeMessageModal();
+                }
+            }
+        });
+
+        // Initialize Application
+        async function init() {
+            const contentElement = document.getElementById('content');
+            const offerId = getOfferIdFromURL();
+            
+            try {
+                offerData = await fetchOfferDetails(offerId);
+                contentElement.innerHTML = renderOfferDetails(offerData);
+                
+                // Initialize selected quantities
+                offerData.data.offerContents.forEach(content => {
+                    selectedQuantities[content.id] = 0;
+                });
+                
+                updateUI();
+                updateTotalSummary();
+                
+            } catch (error) {
+                contentElement.innerHTML = `
+                    <div style="text-align: center; padding: 60px 0;">
+                        <h2 style="color: var(--dark); margin-bottom: 16px;">Unable to Load Offer Details</h2>
+                        <p style="color: var(--gray-600); margin-bottom: 24px;">${error.message}</p>
+                        <button class="back-btn" onclick="goBack()">← Go Back</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Start the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
