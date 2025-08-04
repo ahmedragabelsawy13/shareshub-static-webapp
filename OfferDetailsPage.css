@@ -1703,7 +1703,6 @@ body {
     transform: rotate(180deg);
 }
 
-/*Ahmed*/
 
 /* Enhanced Tier Card Styles */
 .tier-card {
@@ -1806,4 +1805,349 @@ body {
 .tier-progress.active {
     color: var(--primary);
     font-weight: 600;
+}
+
+/* Coupon Code Field Enhancement */
+#couponCode {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+#couponCode::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: inherit;
+    font-weight: normal;
+}
+
+/* Survey Modal Styles */
+.survey-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 3500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+}
+
+.survey-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.survey-modal {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.survey-overlay.active .survey-modal {
+    transform: scale(1) translateY(0);
+}
+
+.survey-header {
+    padding: 24px 24px 20px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    text-align: center;
+    position: relative;
+}
+
+.survey-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.survey-subtitle {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.survey-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--gray-400);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.survey-close:hover {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+
+.survey-body {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.survey-question {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.survey-question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.survey-question-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.survey-question-required {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-left: 4px;
+}
+
+/* Yes/No Questions */
+.survey-yes-no {
+    display: flex;
+    gap: 12px;
+}
+
+.survey-option {
+    flex: 1;
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+}
+
+.survey-option:hover {
+    border-color: var(--secondary);
+    background: rgba(8, 172, 171, 0.05);
+}
+
+.survey-option.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(255, 143, 77, 0.1), rgba(8, 172, 171, 0.1));
+    color: var(--primary);
+}
+
+.survey-option-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.survey-option-text {
+    font-size: 0.9rem;
+}
+
+/* Free Text Questions */
+.survey-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.survey-textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(8, 172, 171, 0.1);
+}
+
+.survey-textarea::placeholder {
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+/* Survey Actions */
+.survey-actions {
+    padding: 20px 24px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.survey-skip-btn {
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.survey-skip-btn:hover {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+
+.survey-submit-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 143, 77, 0.3);
+}
+
+.survey-submit-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(255, 143, 77, 0.4);
+}
+
+.survey-submit-btn:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Progress indicator */
+.survey-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--gray-600);
+}
+
+.survey-progress-bar {
+    width: 60px;
+    height: 4px;
+    background: var(--gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.survey-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    transition: width 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .survey-modal {
+        max-width: 95vw;
+        margin: 10px;
+    }
+    
+    .survey-yes-no {
+        flex-direction: column;
+    }
+    
+    .survey-actions {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .survey-skip-btn,
+    .survey-submit-btn {
+        width: 100%;
+    }
+}
+
+/* Add these CSS classes for sequential question display (optional) */
+
+.survey-question.hidden {
+    display: none;
+}
+
+.survey-question.current {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+.survey-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.survey-nav-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.survey-nav-btn:hover:not(:disabled) {
+    background: var(--primary);
+    transform: translateY(-1px);
+}
+
+.survey-nav-btn:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.question-counter {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

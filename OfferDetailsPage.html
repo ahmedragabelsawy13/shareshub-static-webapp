@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offer Details - SharesHub</title>
     <link rel="stylesheet" href="./OfferDetailsPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -19,7 +21,7 @@
             <!-- Share Button -->
             <div class="share-dropdown">
                 <button class="share-btn" onclick="toggleShareMenu()">
-                    <span class="share-icon">📤</span>
+                    <i class="fas fa-share-alt"></i>
                 </button>
             </div>
         </div>
@@ -27,27 +29,27 @@
         <div class="share-overlay" id="shareOverlay" onclick="closeShareMenu()"></div>
         <div class="share-menu" id="shareMenu">
             <button class="share-option" onclick="shareViaWebAPI()">
-                <span class="share-option-icon">📱</span>
+                <i class="fas fa-share-nodes"></i>
                 <span class="share-option-text">Share via Device</span>
             </button>
             <button class="share-option" onclick="copyOfferLink()">
-                <span class="share-option-icon">🔗</span>
+                <i class="fas fa-link"></i>
                 <span class="share-option-text">Copy Link</span>
             </button>
             <button class="share-option" onclick="shareViaWhatsApp()">
-                <span class="share-option-icon">💬</span>
+                <i class="fab fa-whatsapp"></i>
                 <span class="share-option-text">WhatsApp</span>
             </button>
             <button class="share-option" onclick="shareViaFacebook()">
-                <span class="share-option-icon">📘</span>
+                <i class="fab fa-facebook"></i>
                 <span class="share-option-text">Facebook</span>
             </button>
             <button class="share-option" onclick="shareViaTwitter()">
-                <span class="share-option-icon">🐦</span>
+                <i class="fab fa-twitter"></i>
                 <span class="share-option-text">Twitter</span>
             </button>
             <button class="share-option" onclick="shareViaEmail()">
-                <span class="share-option-icon">✉️</span>
+                <i class="fas fa-envelope"></i>
                 <span class="share-option-text">Email</span>
             </button>
         </div>
@@ -120,7 +122,7 @@
                                     <select id="phoneCountryCode" name="phoneCountryCode" class="country-code-select"
                                         required>
                                         <option value="+20">🇪🇬 +20</option>
-                                        <option value="+1">🇺🇸 +1</option>
+                                        <!-- <option value="+1">🇺🇸 +1</option>
                                         <option value="+44">🇬🇧 +44</option>
                                         <option value="+33">🇫🇷 +33</option>
                                         <option value="+49">🇩🇪 +49</option>
@@ -137,7 +139,7 @@
                                         <option value="+973">🇧🇭 +973</option>
                                         <option value="+968">🇴🇲 +968</option>
                                         <option value="+962">🇯🇴 +962</option>
-                                        <option value="+961">🇱🇧 +961</option>
+                                        <option value="+961">🇱🇧 +961</option> -->
                                     </select>
                                     <input type="tel" id="phoneNumber" name="phoneNumber"
                                         class="form-input phone-number-input" placeholder="1234567890" required>
@@ -145,35 +147,17 @@
                                 <div class="error-message" id="phoneNumber-error"></div>
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="mobileNumber" class="form-label">Mobile Number (if different)</label>
                                 <div class="phone-input-group">
                                     <select id="mobileCountryCode" name="mobileCountryCode" class="country-code-select">
                                         <option value="+20">🇪🇬 +20</option>
-                                        <option value="+1">🇺🇸 +1</option>
-                                        <option value="+44">🇬🇧 +44</option>
-                                        <option value="+33">🇫🇷 +33</option>
-                                        <option value="+49">🇩🇪 +49</option>
-                                        <option value="+39">🇮🇹 +39</option>
-                                        <option value="+34">🇪🇸 +34</option>
-                                        <option value="+86">🇨🇳 +86</option>
-                                        <option value="+91">🇮🇳 +91</option>
-                                        <option value="+81">🇯🇵 +81</option>
-                                        <option value="+82">🇰🇷 +82</option>
-                                        <option value="+971">🇦🇪 +971</option>
-                                        <option value="+966">🇸🇦 +966</option>
-                                        <option value="+965">🇰🇼 +965</option>
-                                        <option value="+974">🇶🇦 +974</option>
-                                        <option value="+973">🇧🇭 +973</option>
-                                        <option value="+968">🇴🇲 +968</option>
-                                        <option value="+962">🇯🇴 +962</option>
-                                        <option value="+961">🇱🇧 +961</option>
                                     </select>
                                     <input type="tel" id="mobileNumber" name="mobileNumber"
                                         class="form-input phone-number-input" placeholder="1234567890">
                                 </div>
                                 <div class="error-message" id="mobileNumber-error"></div>
-                            </div>
+                            </div> -->
 
                             <div class="form-group">
                                 <label for="country" class="form-label required">Country</label>
@@ -212,6 +196,12 @@
                                 <input type="text" id="zipCode" name="zipCode" class="form-input">
                                 <div class="error-message" id="zipCode-error"></div>
                             </div>
+
+                            <div class="form-group full-width">
+                                <label for="couponCode" class="form-label required">Coupon Code</label>
+                                <input type="text" id="couponCode" name="couponCode" class="form-input" required>
+                                <div class="error-message" id="couponCode-error"></div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -240,6 +230,35 @@
             <h2 class="message-title" id="messageTitle">Success!</h2>
             <div class="message-content" id="messageContent"></div>
             <button class="message-close-btn" onclick="closeMessageModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Survey Modal -->
+    <div class="survey-overlay" id="surveyModal">
+        <div class="survey-modal">
+            <div class="survey-header">
+                <button class="survey-close" onclick="closeSurveyModal()">&times;</button>
+                <h2 class="survey-title">📋 Quick Feedback Survey</h2>
+                <p class="survey-subtitle">Help us improve your experience! This will only take 2 minutes.</p>
+            </div>
+
+            <div class="survey-body" id="surveyBody">
+                <!-- Survey questions will be dynamically generated here -->
+            </div>
+
+            <div class="survey-actions">
+                <div class="survey-progress">
+                    <span id="surveyProgressText">0% Complete</span>
+                    <div class="survey-progress-bar">
+                        <div class="survey-progress-fill" id="surveyProgressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="survey-skip-btn" onclick="skipSurvey()">Skip Survey</button>
+                    <button class="survey-submit-btn" id="surveySubmitBtn" onclick="submitSurvey()">Submit
+                        Feedback</button>
+                </div>
+            </div>
         </div>
     </div>
 

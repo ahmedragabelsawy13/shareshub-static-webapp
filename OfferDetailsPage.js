@@ -146,9 +146,9 @@ function createTierCard(tier) {
 
 function createContentCard(content) {
     const progress = (content.numberOfApplicants / content.maxQuantity) * 100;
-    
+
     // Generate initial tier cards (quantity = 0)
-    const tiersHTML = content.pricingTiers.map(tier => 
+    const tiersHTML = content.pricingTiers.map(tier =>
         createTierCard(tier, content, 0)
     ).join('');
 
@@ -520,7 +520,7 @@ function validateForm() {
     let isValid = true;
     const requiredFields = [
         'firstName', 'lastName', 'phoneNumber', 'country',
-        'state', 'street', 'building', 'apartment', 'floor'
+        'state', 'street', 'building', 'apartment', 'floor', 'couponCode'
     ];
 
     // Clear previous errors
@@ -535,7 +535,7 @@ function validateForm() {
             isValid = false;
         } else {
             // Additional validation for specific fields
-            if (fieldName === 'phoneNumber' || fieldName === 'mobileNumber') {
+            if (fieldName === 'phoneNumber') {
                 if (value && !isValidPhoneNumber(value)) {
                     showFieldError(fieldName, 'Please enter a valid phone number');
                     isValid = false;
@@ -545,6 +545,17 @@ function validateForm() {
             if (fieldName === 'email' && value) {
                 if (!isValidEmail(value)) {
                     showFieldError('email', 'Please enter a valid email address');
+                    isValid = false;
+                }
+            }
+
+            if (fieldName === 'couponCode') {
+                // Basic coupon code validation (alphanumeric, minimum 3 characters)
+                if (value.length < 3) {
+                    showFieldError(fieldName, 'Coupon code must be at least 3 characters long');
+                    isValid = false;
+                } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
+                    showFieldError(fieldName, 'Coupon code can only contain letters and numbers');
                     isValid = false;
                 }
             }
@@ -626,6 +637,22 @@ function closeMessageModal() {
     const messageModal = document.getElementById('messageModal');
     messageModal.classList.remove('active');
     document.body.style.overflow = '';
+    
+    // Launch survey after successful order (only for success messages)
+    const messageIcon = document.getElementById('messageIcon');
+    if (messageIcon && messageIcon.classList.contains('success')) {
+        // Delay survey launch slightly for better UX and ensure modal is fully closed
+        setTimeout(() => {
+            try {
+                console.log('Attempting to open survey modal...'); // Debug log
+                openSurveyModal();
+            } catch (error) {
+                console.error('Error opening survey modal:', error);
+                // Fallback: show toast if survey fails to open
+                showToast('Thank you for your order!');
+            }
+        }, 800); // Increased delay to ensure message modal is fully closed
+    }
 }
 
 function showSuccessMessage(deposit = null, orderNumber = null) {
@@ -745,9 +772,7 @@ function buildOrderData(selectedItems) {
 
     // Build phone numbers with country codes
     const phoneCountryCode = document.getElementById('phoneCountryCode').value;
-    const mobileCountryCode = document.getElementById('mobileCountryCode').value;
     const phoneNumber = formObject.phoneNumber ? phoneCountryCode + formObject.phoneNumber : '';
-    const mobileNumber = formObject.mobileNumber ? mobileCountryCode + formObject.mobileNumber : '';
 
     // Build the order object according to API requirements
     return {
@@ -764,7 +789,8 @@ function buildOrderData(selectedItems) {
             state: formObject.state,
             zipCode: formObject.zipCode || ''
         },
-        mobileNumber: mobileNumber || phoneNumber,
+        mobileNumber: phoneNumber,
+        couponCode: formObject.couponCode, // Add coupon code to payload
         offerContents: selectedItems.map(item => ({
             offerContentId: item.contentId,
             quantity: item.quantity
@@ -1090,16 +1116,18 @@ document.addEventListener('click', function (event) {
 });
 
 // Close modal with Escape key (for both modals and share menu)
-// Update the existing keydown event listener to include share menu
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
         const orderModal = document.getElementById('orderModal');
         const messageModal = document.getElementById('messageModal');
+        const surveyModal = document.getElementById('surveyModal');
 
         if (orderModal.classList.contains('active')) {
             closeOrderModal();
         } else if (messageModal.classList.contains('active')) {
             closeMessageModal();
+        } else if (surveyModal && surveyModal.classList.contains('active')) {
+            closeSurveyModal();
         } else if (shareMenuOpen) {
             closeShareMenu();
         }
@@ -1122,7 +1150,7 @@ async function init() {
 
         updateUI();
         updateTotalSummary();
-        
+
         // Initialize countdown timers, description states, and HTML content
         setTimeout(() => {
             initializeContentCountdowns();
@@ -1290,7 +1318,7 @@ function initializeDescriptionStates() {
 // Set HTML content for descriptions
 function setDescriptionHTML() {
     if (!offerData) return;
-    
+
     offerData.data.offerContents.forEach(content => {
         const descElement = document.getElementById(`desc-${content.id}`);
         if (descElement) {
@@ -1307,7 +1335,7 @@ function calculateTierStatus(content, tier, currentQuantity = 0) {
     const totalGroupSize = content.numberOfApplicants + currentQuantity;
     const isUnlocked = totalGroupSize >= tier.quantity;
     const isActive = getApplicableTier(content, currentQuantity)?.id === tier.id;
-    
+
     return {
         isUnlocked,
         isActive,
@@ -1320,12 +1348,12 @@ function calculateTierStatus(content, tier, currentQuantity = 0) {
 function createTierCard(tier, content, currentQuantity = 0) {
     const savings = calculateSavings(tier.currentPrice, tier.originalPrice);
     const status = calculateTierStatus(content, tier, currentQuantity);
-    
+
     // Determine status classes and icons
     let statusClass = 'locked';
     let statusIcon = '🔒';
     let cardClass = 'locked';
-    
+
     if (status.isActive) {
         statusClass = 'active';
         statusIcon = '⭐';
@@ -1335,7 +1363,7 @@ function createTierCard(tier, content, currentQuantity = 0) {
         statusIcon = '🔓';
         cardClass = 'unlocked';
     }
-    
+
     // Progress text
     let progressText = '';
     if (status.isActive) {
@@ -1345,10 +1373,10 @@ function createTierCard(tier, content, currentQuantity = 0) {
     } else {
         progressText = `Need ${status.needed} more user${status.needed !== 1 ? 's' : ''} to unlock`;
     }
-    
+
     // Current tier badge
     const currentBadge = status.isActive ? '<div class="current-tier-badge">CURRENT TIER</div>' : '';
-    
+
     return `
         <div class="tier-card ${cardClass}" id="tier-${tier.id}">
             ${currentBadge}
@@ -1375,11 +1403,463 @@ function createTierCard(tier, content, currentQuantity = 0) {
 function updateTierCards(content, currentQuantity = 0) {
     const tierGrid = document.querySelector(`#tier-grid-${content.id}`);
     if (!tierGrid) return;
-    
+
     // Regenerate tier cards with current status
-    const tiersHTML = content.pricingTiers.map(tier => 
+    const tiersHTML = content.pricingTiers.map(tier =>
         createTierCard(tier, content, currentQuantity)
     ).join('');
-    
+
     tierGrid.innerHTML = tiersHTML;
+}
+
+// Replace the existing surveyQuestions array and related functions with these changes:
+
+// Survey State and Data - REPLACE EXISTING
+let surveyAnswers = {};
+let surveyQuestions = []; // This will now be populated from API
+let currentSurveyId = null;
+
+// NEW: Fetch survey data from API
+async function fetchSurveyData() {
+    try {
+        console.log('Fetching survey data...'); // Debug log
+        
+        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/3`;
+        // const url = `https://localhost:7255/api/Surveys/3`
+
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('Survey API response:', result); // Debug log
+        
+        if (result.succeeded && result.data && result.data.length > 0) {
+            const survey = result.data[0];
+            currentSurveyId = survey.id;
+            
+            // Transform API questions to match existing structure
+            surveyQuestions = survey.questions
+                .sort((a, b) => a.orderIndex - b.orderIndex)
+                .map(q => ({
+                    id: q.id,
+                    type: q.questionType === 1 ? 'yes_no' : 'text',
+                    text: q.questionText,
+                    required: q.isRequired,
+                    placeholder: q.questionType === 2 ? 'Enter your response...' : undefined
+                }));
+            
+            console.log('Survey questions loaded from API:', surveyQuestions.length); // Debug log
+            return true;
+        } else {
+            console.warn('No active surveys found, using fallback questions');
+            throw new Error('No active surveys found');
+        }
+    } catch (error) {
+        console.error('Failed to fetch survey data:', error);
+        // Keep existing fallback questions
+        currentSurveyId = null;
+        surveyQuestions = [
+            {
+                id: 'q1',
+                type: 'yes_no',
+                text: 'Was the ordering process easy to understand?',
+                required: true
+            },
+            {
+                id: 'q2',
+                type: 'yes_no',
+                text: 'Did you find the pricing information clear and transparent?',
+                required: true
+            },
+            {
+                id: 'q3',
+                type: 'yes_no',
+                text: 'Would you recommend this offer to a friend?',
+                required: true
+            },
+            {
+                id: 'q4',
+                type: 'text',
+                text: 'What did you like most about this offer?',
+                placeholder: 'Please share what you enjoyed about this experience...',
+                required: false
+            },
+            {
+                id: 'q5',
+                type: 'text',
+                text: 'How can we improve your experience?',
+                placeholder: 'Any suggestions or feedback for improvement...',
+                required: false
+            },
+            {
+                id: 'q6',
+                type: 'text',
+                text: 'Any additional comments or feedback?',
+                placeholder: 'Feel free to share any other thoughts...',
+                required: false
+            }
+        ];
+        console.log('Using fallback survey questions:', surveyQuestions.length); // Debug log
+        return false;
+    }
+}
+
+async function openSurveyModal() {
+    try {
+        console.log('Opening survey modal...'); // Debug log
+        
+        // Fetch latest survey data before showing modal
+        const surveyLoaded = await fetchSurveyData();
+        console.log('Survey data loaded:', surveyLoaded); // Debug log
+        
+        // Generate questions regardless of whether API data was loaded (fallback questions exist)
+        generateSurveyQuestions();
+        
+        const surveyModal = document.getElementById('surveyModal');
+        if (!surveyModal) {
+            console.error('Survey modal element not found');
+            return;
+        }
+        
+        // Ensure any previous modal states are cleared
+        document.body.style.overflow = 'hidden';
+        surveyModal.classList.add('active');
+        
+        updateSurveyProgress();
+        console.log('Survey modal opened successfully'); // Debug log
+        
+    } catch (error) {
+        console.error('Error in openSurveyModal:', error);
+        // Fallback behavior
+        showToast('Unable to load survey at this time');
+    }
+}
+
+// MODIFY: selectYesNo function to handle API question IDs
+function selectYesNo(questionId, answer) {
+    // Convert yes/no to boolean for API compatibility
+    surveyAnswers[questionId] = answer === 'yes';
+
+    // Update UI (existing code remains the same)
+    const yesOption = document.getElementById(`${questionId}-yes`);
+    const noOption = document.getElementById(`${questionId}-no`);
+
+    yesOption.classList.remove('selected');
+    noOption.classList.remove('selected');
+
+    if (answer === 'yes') {
+        yesOption.classList.add('selected');
+    } else {
+        noOption.classList.add('selected');
+    }
+
+    updateSurveyProgress();
+}
+
+// MODIFY: submitSurvey function for API integration
+async function submitSurvey() {
+    try {
+        const submitBtn = document.getElementById('surveySubmitBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+
+        // Prepare survey data for API
+        const responses = Object.entries(surveyAnswers).map(([questionId, answer]) => {
+            const question = surveyQuestions.find(q => q.id.toString() === questionId.toString());
+            
+            if (question && question.type === 'yes_no') {
+                return {
+                    questionId: parseInt(questionId),
+                    textAnswer: "",
+                    booleanAnswer: answer
+                };
+            } else {
+                return {
+                    questionId: parseInt(questionId),
+                    textAnswer: answer.toString(),
+                    booleanAnswer: null
+                };
+            }
+        });
+
+        const surveyData = {
+            surveyId: currentSurveyId || 3, // Use fetched survey ID or fallback to 3
+            responses: responses
+        };
+
+        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/submit`;
+        // const url = `https://localhost:7255/Surveys/submit`
+
+        // Submit to API
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(surveyData)
+        });
+
+        if (response.ok) {
+            showToast('Thank you for your feedback!');
+            closeSurveyModal();
+        } else {
+            const errorResult = await response.json();
+            throw new Error(errorResult.message || 'Failed to submit survey');
+        }
+
+    } catch (error) {
+        console.error('Survey submission error:', error);
+        showToast('Failed to submit survey. Thank you for trying!');
+        closeSurveyModal(); // Close anyway to not block user
+    } finally {
+        // Restore button state
+        const submitBtn = document.getElementById('surveySubmitBtn');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Feedback';
+    }
+}
+
+// Optional: Sequential Question Display Functions
+// Add these if you want to show questions one at a time
+
+let currentQuestionIndex = 0;
+
+// REPLACE: generateSurveyQuestions function for sequential display
+function generateSurveyQuestionsSequential() {
+    const surveyBody = document.getElementById('surveyBody');
+    let questionsHTML = '';
+
+    surveyQuestions.forEach((question, index) => {
+        const isHidden = index !== currentQuestionIndex ? 'hidden' : 'current';
+        
+        if (question.type === 'yes_no') {
+            questionsHTML += `
+                <div class="survey-question ${isHidden}" data-question-id="${question.id}" data-question-index="${index}">
+                    <div class="survey-question-text">
+                        ${question.text}
+                        ${question.required ? '<span class="survey-question-required">*</span>' : ''}
+                    </div>
+                    <div class="survey-yes-no">
+                        <div class="survey-option" onclick="selectYesNoSequential('${question.id}', 'yes')" id="${question.id}-yes">
+                            <span class="survey-option-icon">👍</span>
+                            <span class="survey-option-text">Yes</span>
+                        </div>
+                        <div class="survey-option" onclick="selectYesNoSequential('${question.id}', 'no')" id="${question.id}-no">
+                            <span class="survey-option-icon">👎</span>
+                            <span class="survey-option-text">No</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (question.type === 'text') {
+            questionsHTML += `
+                <div class="survey-question ${isHidden}" data-question-id="${question.id}" data-question-index="${index}">
+                    <div class="survey-question-text">
+                        ${question.text}
+                        ${question.required ? '<span class="survey-question-required">*</span>' : ''}
+                    </div>
+                    <textarea 
+                        class="survey-textarea" 
+                        id="${question.id}-text"
+                        placeholder="${question.placeholder || 'Enter your response...'}"
+                        oninput="updateTextAnswer('${question.id}', this.value)"
+                    ></textarea>
+                </div>
+            `;
+        }
+    });
+
+    // Add navigation
+    questionsHTML += `
+        <div class="survey-navigation">
+            <button class="survey-nav-btn" id="prevQuestionBtn" onclick="previousQuestion()" disabled>
+                Previous
+            </button>
+            <div class="question-counter">
+                Question <span id="currentQuestionNum">1</span> of ${surveyQuestions.length}
+            </div>
+            <button class="survey-nav-btn" id="nextQuestionBtn" onclick="nextQuestion()">
+                Next
+            </button>
+        </div>
+    `;
+
+    surveyBody.innerHTML = questionsHTML;
+    updateNavigationButtons();
+}
+
+function selectYesNoSequential(questionId, answer) {
+    selectYesNo(questionId, answer); // Call existing function
+    
+    // Auto-advance to next question after a short delay
+    setTimeout(() => {
+        if (currentQuestionIndex < surveyQuestions.length - 1) {
+            nextQuestion();
+        }
+    }, 800);
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < surveyQuestions.length - 1) {
+        // Hide current question
+        const currentQuestion = document.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+        currentQuestion.classList.remove('current');
+        currentQuestion.classList.add('hidden');
+        
+        // Show next question
+        currentQuestionIndex++;
+        const nextQuestion = document.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+        nextQuestion.classList.remove('hidden');
+        nextQuestion.classList.add('current');
+        
+        updateNavigationButtons();
+        updateQuestionCounter();
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestionIndex > 0) {
+        // Hide current question
+        const currentQuestion = document.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+        currentQuestion.classList.remove('current');
+        currentQuestion.classList.add('hidden');
+        
+        // Show previous question
+        currentQuestionIndex--;
+        const prevQuestion = document.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+        prevQuestion.classList.remove('hidden');
+        prevQuestion.classList.add('current');
+        
+        updateNavigationButtons();
+        updateQuestionCounter();
+    }
+}
+
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prevQuestionBtn');
+    const nextBtn = document.getElementById('nextQuestionBtn');
+    
+    prevBtn.disabled = currentQuestionIndex === 0;
+    
+    if (currentQuestionIndex === surveyQuestions.length - 1) {
+        nextBtn.textContent = 'Finish';
+        nextBtn.onclick = () => {
+            // Hide navigation and show submit button
+            document.querySelector('.survey-navigation').style.display = 'none';
+            document.querySelector('.survey-actions').style.display = 'flex';
+        };
+    } else {
+        nextBtn.textContent = 'Next';
+        nextBtn.onclick = nextQuestion;
+    }
+}
+
+function updateQuestionCounter() {
+    document.getElementById('currentQuestionNum').textContent = currentQuestionIndex + 1;
+}
+
+// MODIFY: openSurveyModal for sequential display
+async function openSurveyModalSequential() {
+    await fetchSurveyData();
+    
+    currentQuestionIndex = 0; // Reset to first question
+    generateSurveyQuestionsSequential(); // Use sequential version
+    
+    const surveyModal = document.getElementById('surveyModal');
+    surveyModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Hide submit actions initially for sequential mode
+    document.querySelector('.survey-actions').style.display = 'none';
+    
+    updateSurveyProgress();
+}
+
+// Fix 1: Add missing functions that are called but not defined
+
+function closeSurveyModal() {
+    const surveyModal = document.getElementById('surveyModal');
+    surveyModal.classList.remove('active');
+    document.body.style.overflow = '';
+    // Reset survey data
+    surveyAnswers = {};
+}
+
+function generateSurveyQuestions() {
+    const surveyBody = document.getElementById('surveyBody');
+    let questionsHTML = '';
+
+    surveyQuestions.forEach((question, index) => {
+        if (question.type === 'yes_no') {
+            questionsHTML += `
+                <div class="survey-question" data-question-id="${question.id}">
+                    <div class="survey-question-text">
+                        ${index + 1}. ${question.text}
+                        ${question.required ? '<span class="survey-question-required">*</span>' : ''}
+                    </div>
+                    <div class="survey-yes-no">
+                        <div class="survey-option" onclick="selectYesNo('${question.id}', 'yes')" id="${question.id}-yes">
+                            <span class="survey-option-icon">👍</span>
+                            <span class="survey-option-text">Yes</span>
+                        </div>
+                        <div class="survey-option" onclick="selectYesNo('${question.id}', 'no')" id="${question.id}-no">
+                            <span class="survey-option-icon">👎</span>
+                            <span class="survey-option-text">No</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (question.type === 'text') {
+            questionsHTML += `
+                <div class="survey-question" data-question-id="${question.id}">
+                    <div class="survey-question-text">
+                        ${index + 1}. ${question.text}
+                        ${question.required ? '<span class="survey-question-required">*</span>' : ''}
+                    </div>
+                    <textarea 
+                        class="survey-textarea" 
+                        id="${question.id}-text"
+                        placeholder="${question.placeholder || 'Enter your response...'}"
+                        oninput="updateTextAnswer('${question.id}', this.value)"
+                    ></textarea>
+                </div>
+            `;
+        }
+    });
+
+    surveyBody.innerHTML = questionsHTML;
+}
+
+function updateTextAnswer(questionId, value) {
+    if (value.trim()) {
+        surveyAnswers[questionId] = value.trim();
+    } else {
+        delete surveyAnswers[questionId];
+    }
+    updateSurveyProgress();
+}
+
+function updateSurveyProgress() {
+    const totalQuestions = surveyQuestions.length;
+    const answeredQuestions = Object.keys(surveyAnswers).length;
+    const progressPercentage = Math.round((answeredQuestions / totalQuestions) * 100);
+
+    document.getElementById('surveyProgressText').textContent = `${progressPercentage}% Complete`;
+    document.getElementById('surveyProgressFill').style.width = `${progressPercentage}%`;
+
+    // Enable submit button if all required questions are answered
+    const requiredQuestions = surveyQuestions.filter(q => q.required);
+    const answeredRequiredQuestions = requiredQuestions.filter(q => surveyAnswers[q.id]);
+    const canSubmit = answeredRequiredQuestions.length === requiredQuestions.length;
+
+    document.getElementById('surveySubmitBtn').disabled = !canSubmit;
+}
+
+function skipSurvey() {
+    closeSurveyModal();
+    showToast('Survey skipped. Thank you!');
 }
