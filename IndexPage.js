@@ -96,10 +96,10 @@ function createDealCard(deal) {
                         <h3 class="deal-title">${deal.title}</h3>
                         <p class="deal-desc">${deal.desc}</p>
                         
-                        <div class="pricing">
+                        <!--<div class="pricing">
                             <span class="current-price">${formatPrice(deal.currentPrice)}</span>
                             <span class="original-price">${formatPrice(deal.originalPrice)}</span>
-                        </div>
+                        </div>-->
                         
                         <!--<div class="progress-section">
                             <div class="progress-info">

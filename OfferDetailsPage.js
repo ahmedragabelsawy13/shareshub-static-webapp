@@ -211,11 +211,11 @@ function renderOfferDetails(data) {
                 <div>
                     <h1 class="hero-title">${offer.title}</h1>
                     <p class="hero-desc">${offer.desc}</p>
-                    <div class="pricing-summary">
+                    <!--<div class="pricing-summary">
                         <span class="current-price">${formatPrice(offer.currentPrice)}</span>
                         <span class="original-price">${formatPrice(offer.originalPrice)}</span>
                         <span class="discount-badge">-${offer.discount}%</span>
-                    </div>
+                    </div>-->
                     <div class="supplier-info">
                         <img src="${offer.supplier.logo}" alt="${offer.supplier.name}" class="supplier-logo" />
                              
@@ -236,7 +236,8 @@ function renderOfferDetails(data) {
         ${offer.termsOfUse ? `
             <div class="terms">
                 <h3>Terms of Use</h3>
-                <p>${offer.termsOfUse}</p>
+                <!--<p>${offer.termsOfUse}</p>-->
+                <div class="content-desc" id="terms-of-use"></div>
             </div>
         ` : ''}
     `;
@@ -1155,6 +1156,7 @@ async function init() {
         setTimeout(() => {
             initializeContentCountdowns();
             setDescriptionHTML(); // Set HTML content first
+            setTermsAndConditionHTML(); // Set HTML content first
             initializeDescriptionStates(); // Then initialize collapse states
         }, 100);
 
@@ -1325,6 +1327,17 @@ function setDescriptionHTML() {
             descElement.innerHTML = content.desc;
         }
     });
+}
+
+// Set HTML content for descriptions
+function setTermsAndConditionHTML() {
+    if (!offerData) return;
+
+    const terms = offerData.data.termsOfUse;
+    const descElement = document.getElementById(`terms-of-use`);
+    if (descElement) {
+        descElement.innerHTML = terms;
+    }
 }
 
 
