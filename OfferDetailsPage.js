@@ -1437,7 +1437,7 @@ async function fetchSurveyData() {
     try {
         console.log('Fetching survey data...'); // Debug log
         
-        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/3`;
+        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/5`;
         // const url = `https://localhost:7255/api/Surveys/3`
 
         const response = await fetch(url);
@@ -1456,13 +1456,39 @@ async function fetchSurveyData() {
             // Transform API questions to match existing structure
             surveyQuestions = survey.questions
                 .sort((a, b) => a.orderIndex - b.orderIndex)
-                .map(q => ({
-                    id: q.id,
-                    type: q.questionType === 1 ? 'yes_no' : 'text',
-                    text: q.questionText,
-                    required: q.isRequired,
-                    placeholder: q.questionType === 2 ? 'Enter your response...' : undefined
-                }));
+                .map(q => {
+                    const baseQuestion = {
+                        id: q.id,
+                        text: q.questionText,
+                        required: q.isRequired,
+                    };
+
+                    // Handle different question types
+                    if (q.questionType === 1) {
+                        return { ...baseQuestion, type: 'yes_no' };
+                    } else if (q.questionType === 2) {
+                        return { 
+                            ...baseQuestion, 
+                            type: 'text',
+                            placeholder: 'Enter your response...'
+                        };
+                    } else if (q.questionType === 3) {
+                        // Single choice question
+                        return {
+                            ...baseQuestion,
+                            type: 'single_choice',
+                            options: q.options
+                                .sort((a, b) => a.orderIndex - b.orderIndex)
+                                .map(option => ({
+                                    id: option.id,
+                                    text: option.optionText
+                                }))
+                        };
+                    }
+                    
+                    // Fallback for unknown types
+                    return { ...baseQuestion, type: 'text', placeholder: 'Enter your response...' };
+                });
             
             console.log('Survey questions loaded from API:', surveyQuestions.length); // Debug log
             return true;
@@ -1472,7 +1498,7 @@ async function fetchSurveyData() {
         }
     } catch (error) {
         console.error('Failed to fetch survey data:', error);
-        // Keep existing fallback questions
+        // Keep existing fallback questions with single choice example
         currentSurveyId = null;
         surveyQuestions = [
             {
@@ -1483,9 +1509,15 @@ async function fetchSurveyData() {
             },
             {
                 id: 'q2',
-                type: 'yes_no',
-                text: 'Did you find the pricing information clear and transparent?',
-                required: true
+                type: 'single_choice',
+                text: 'How would you rate your overall experience?',
+                required: true,
+                options: [
+                    { id: 'opt1', text: 'Excellent' },
+                    { id: 'opt2', text: 'Good' },
+                    { id: 'opt3', text: 'Average' },
+                    { id: 'opt4', text: 'Poor' }
+                ]
             },
             {
                 id: 'q3',
@@ -1588,13 +1620,22 @@ async function submitSurvey() {
                 return {
                     questionId: parseInt(questionId),
                     textAnswer: "",
-                    booleanAnswer: answer
+                    booleanAnswer: answer,
+                    selectedOptionId: null
+                };
+            } else if (question && question.type === 'single_choice') {
+                return {
+                    questionId: parseInt(questionId),
+                    textAnswer: "",
+                    booleanAnswer: null,
+                    selectedOptionId: parseInt(answer) // answer contains the option ID
                 };
             } else {
                 return {
                     questionId: parseInt(questionId),
                     textAnswer: answer.toString(),
-                    booleanAnswer: null
+                    booleanAnswer: null,
+                    selectedOptionId: null
                 };
             }
         });
@@ -1635,7 +1676,6 @@ async function submitSurvey() {
         submitBtn.textContent = 'Submit Feedback';
     }
 }
-
 // Optional: Sequential Question Display Functions
 // Add these if you want to show questions one at a time
 
@@ -1826,6 +1866,26 @@ function generateSurveyQuestions() {
                     </div>
                 </div>
             `;
+        } else if (question.type === 'single_choice') {
+            // Generate single choice options
+            const optionsHTML = question.options.map(option => `
+                <div class="survey-choice-option" onclick="selectSingleChoice('${question.id}', '${option.id}')" id="${question.id}-${option.id}">
+                    <div class="survey-choice-radio"></div>
+                    <span class="survey-choice-text">${option.text}</span>
+                </div>
+            `).join('');
+
+            questionsHTML += `
+                <div class="survey-question" data-question-id="${question.id}">
+                    <div class="survey-question-text">
+                        ${index + 1}. ${question.text}
+                        ${question.required ? '<span class="survey-question-required">*</span>' : ''}
+                    </div>
+                    <div class="survey-single-choice">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
         } else if (question.type === 'text') {
             questionsHTML += `
                 <div class="survey-question" data-question-id="${question.id}">
@@ -1875,4 +1935,28 @@ function updateSurveyProgress() {
 function skipSurvey() {
     closeSurveyModal();
     showToast('Survey skipped. Thank you!');
+}
+
+function selectSingleChoice(questionId, optionId) {
+    // Store the selected option ID
+    surveyAnswers[questionId] = optionId;
+
+    // Update UI - remove selection from all options for this question
+    const question = surveyQuestions.find(q => q.id.toString() === questionId.toString());
+    if (question && question.options) {
+        question.options.forEach(option => {
+            const optionElement = document.getElementById(`${questionId}-${option.id}`);
+            if (optionElement) {
+                optionElement.classList.remove('selected');
+            }
+        });
+    }
+
+    // Add selection to clicked option
+    const selectedElement = document.getElementById(`${questionId}-${optionId}`);
+    if (selectedElement) {
+        selectedElement.classList.add('selected');
+    }
+
+    updateSurveyProgress();
 }
