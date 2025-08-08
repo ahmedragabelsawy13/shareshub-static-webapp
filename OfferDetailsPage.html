@@ -156,33 +156,29 @@
                                 </div>
                                 <div class="error-message" id="phoneNumber-error"></div>
                             </div>
-
-                            <!-- <div class="form-group">
-                                <label for="mobileNumber" class="form-label">Mobile Number (if different)</label>
-                                <div class="phone-input-group">
-                                    <select id="mobileCountryCode" name="mobileCountryCode" class="country-code-select">
-                                        <option value="+20">🇪🇬 +20</option>
-                                    </select>
-                                    <input type="tel" id="mobileNumber" name="mobileNumber"
-                                        class="form-input phone-number-input" placeholder="1234567890">
-                                </div>
-                                <div class="error-message" id="mobileNumber-error"></div>
-                            </div> -->
+                            
+                            <div class="form-group">
+    <label for="country" class="form-label required">Country</label>
+    <select id="country" name="country" class="form-input form-select" required>
+        <option value="">Select Country</option>
+        <option value="Egypt" selected>Egypt</option>
+    </select>
+    <div class="error-message" id="country-error"></div>
+</div>
 
                             <div class="form-group">
-                                <label for="country" class="form-label required">Country</label>
-                                <input type="text" id="country" name="country" class="form-input" value="Egypt"
-                                    required>
-                                <div class="error-message" id="country-error"></div>
-                            </div>
+    <label for="state" class="form-label required">City</label>
+    <select id="state" name="state" class="form-input form-select" required>
+        <option value="">Select Governorate</option>
+        <option value="Cairo">Cairo</option>
+        <option value="Giza">Giza</option>
+        <option value="Alexandria">Alexandria</option>
+    </select>
+    <div class="error-message" id="state-error"></div>
+</div>
 
-                            <div class="form-group">
-                                <label for="state" class="form-label required">State/Governorate</label>
-                                <input type="text" id="state" name="state" class="form-input" required>
-                                <div class="error-message" id="state-error"></div>
-                            </div>
                             <div class="form-group full-width">
-                                <label for="street" class="form-label required">Street Address</label>
+                                <label for="street" class="form-label required">Address</label>
                                 <input type="text" id="street" name="street" class="form-input" required>
                                 <div class="error-message" id="street-error"></div>
                             </div>
@@ -201,15 +197,15 @@
                                 <input type="text" id="floor" name="floor" class="form-input" required>
                                 <div class="error-message" id="floor-error"></div>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="zipCode" class="form-label">Zip Code</label>
                                 <input type="text" id="zipCode" name="zipCode" class="form-input">
                                 <div class="error-message" id="zipCode-error"></div>
-                            </div>
+                            </div> -->
 
                             <div class="form-group full-width">
-                                <label for="couponCode" class="form-label required">Coupon Code</label>
-                                <input type="text" id="couponCode" name="couponCode" class="form-input" required>
+                                <label for="couponCode" class="form-label">Coupon Code</label>
+                                <input type="text" id="couponCode" name="couponCode" class="form-input">
                                 <div class="error-message" id="couponCode-error"></div>
                             </div>
                         </div>

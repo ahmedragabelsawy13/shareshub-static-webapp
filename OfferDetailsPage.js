@@ -207,7 +207,7 @@ function createContentCard(content) {
 function renderOfferDetails(data) {
     const offer = data.data;
     const contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
-console.log('Offer Details:', offer);
+
     return `
         <div class="offer-hero">
             <div class="hero-content">
@@ -525,7 +525,7 @@ function validateForm() {
     let isValid = true;
     const requiredFields = [
         'firstName', 'lastName', 'phoneNumber', 'country',
-        'state', 'street', 'building', 'apartment', 'floor', 'couponCode'
+        'state', 'street', 'building', 'apartment', 'floor'
     ];
 
     // Clear previous errors
@@ -536,7 +536,15 @@ function validateForm() {
         const value = field.value.trim();
 
         if (!value) {
-            showFieldError(fieldName, 'This field is required');
+            // Custom error messages for dropdowns
+            let errorMessage = 'This field is required';
+            if (fieldName === 'country') {
+                errorMessage = 'Please select a country';
+            } else if (fieldName === 'state') {
+                errorMessage = 'Please select a governorate';
+            }
+            
+            showFieldError(fieldName, errorMessage);
             isValid = false;
         } else {
             // Additional validation for specific fields
@@ -792,7 +800,7 @@ function buildOrderData(selectedItems) {
             email: formObject.email || '',
             floor: formObject.floor,
             state: formObject.state,
-            zipCode: formObject.zipCode || ''
+            zipCode: ''
         },
         mobileNumber: phoneNumber,
         couponCode: formObject.couponCode, // Add coupon code to payload
@@ -1162,6 +1170,7 @@ async function init() {
             setDescriptionHTML(); // Set HTML content first
             setTermsAndConditionHTML(); // Set HTML content first
             initializeDescriptionStates(); // Then initialize collapse states
+            initializeDropdownEvents();
         }, 100);
 
     } catch (error) {
@@ -1963,4 +1972,44 @@ function selectSingleChoice(questionId, optionId) {
     }
 
     updateSurveyProgress();
+}
+
+function onCountryChange() {
+    const countrySelect = document.getElementById('country');
+    const stateSelect = document.getElementById('state');
+    const selectedCountry = countrySelect.value;
+    
+    // Clear current state selection
+    stateSelect.value = '';
+    
+    // Update state options based on country
+    if (selectedCountry === 'Egypt') {
+        stateSelect.innerHTML = `
+            <option value="">Select Governorate</option>
+            <option value="Cairo">Cairo</option>
+            <option value="Giza">Giza</option>
+            <option value="Alexandria">Alexandria</option>
+        `;
+        stateSelect.disabled = false;
+    } else {
+        stateSelect.innerHTML = `<option value="">Select Country First</option>`;
+        stateSelect.disabled = true;
+    }
+    
+    // Clear any previous state errors
+    const stateError = document.getElementById('state-error');
+    if (stateError) {
+        stateError.classList.remove('show');
+        stateError.textContent = '';
+    }
+    stateSelect.classList.remove('error');
+}
+
+function initializeDropdownEvents() {
+    const countrySelect = document.getElementById('country');
+    if (countrySelect) {
+        countrySelect.addEventListener('change', onCountryChange);
+        // Initialize state options on page load
+        onCountryChange();
+    }
 }
