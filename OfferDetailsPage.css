@@ -2288,3 +2288,197 @@ body {
     background: var(--secondary);
     color: white;
 }
+
+
+/* Add these styles to your OfferDetailsPage.css */
+
+/* Sold Out Container */
+.sold-out-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 40px 20px;
+}
+
+.sold-out-card {
+    background: white;
+    border-radius: 20px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    border: 2px solid var(--gray-100);
+}
+
+.sold-out-icon {
+    font-size: 4rem;
+    color: var(--gray-400);
+    margin-bottom: 24px;
+    opacity: 0.8;
+}
+
+.sold-out-content {
+    margin-bottom: 32px;
+}
+
+.sold-out-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 16px;
+}
+
+.sold-out-message {
+    font-size: 1.125rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.sold-out-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.sold-out-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(8, 172, 171, 0.05), rgba(255, 143, 77, 0.05));
+    border-radius: 12px;
+    border-left: 4px solid var(--secondary);
+}
+
+.sold-out-feature i {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    width: 20px;
+    text-align: center;
+}
+
+.sold-out-feature span {
+    font-size: 1rem;
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.sold-out-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-back-to-offers,
+.btn-notify-me {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255, 143, 77, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.btn-back-to-offers:hover,
+.btn-notify-me:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 143, 77, 0.4);
+}
+
+.btn-back-to-offers {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+.btn-notify-me {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+/* Sold Out Badge in Hero Section */
+.sold-out-pricing {
+    justify-content: flex-start;
+}
+
+.sold-out-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sold-out-card {
+        padding: 32px 24px;
+    }
+    
+    .sold-out-title {
+        font-size: 1.75rem;
+    }
+    
+    .sold-out-message {
+        font-size: 1rem;
+    }
+    
+    .sold-out-features {
+        text-align: center;
+    }
+    
+    .sold-out-feature {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .sold-out-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-back-to-offers,
+    .btn-notify-me {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+        padding: 16px 28px;
+    }
+    
+    .sold-out-icon {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sold-out-card {
+        padding: 24px 16px;
+    }
+    
+    .sold-out-title {
+        font-size: 1.5rem;
+    }
+    
+    .sold-out-feature {
+        padding: 10px 12px;
+    }
+    
+    .sold-out-feature span {
+        font-size: 0.9rem;
+    }
+}

@@ -206,7 +206,59 @@ function createContentCard(content) {
 
 function renderOfferDetails(data) {
     const offer = data.data;
-    const contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
+    
+    // Check if offer contents exist and have data
+    const hasOfferContents = offer.offerContents && offer.offerContents.length > 0;
+    
+    // const contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
+    let contentsHTML = '';
+
+    if (hasOfferContents) {
+        // Render normal offer contents
+        contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
+    } else {
+        // Display sold out message
+        contentsHTML = `
+            <div class="sold-out-container">
+                <div class="sold-out-card">
+                    <div class="sold-out-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="sold-out-content">
+                        <h3 class="sold-out-title">All Offers Sold Out!</h3>
+                        <p class="sold-out-message">
+                            We're sorry, but all items in this offer have been sold out. 
+                            Don't worry though - new exciting offers will be added soon!
+                        </p>
+                        <!--<div class="sold-out-features">
+                            <div class="sold-out-feature">
+                                <i class="fas fa-bell"></i>
+                                <span>Get notified when new offers arrive</span>
+                            </div>
+                            <div class="sold-out-feature">
+                                <i class="fas fa-star"></i>
+                                <span>Premium deals coming your way</span>
+                            </div>
+                            <div class="sold-out-feature">
+                                <i class="fas fa-clock"></i>
+                                <span>Check back regularly for updates</span>
+                            </div>
+                        </div>-->
+                        <div class="sold-out-actions">
+                            <button class="btn-back-to-offers" onclick="goBackToOffers()">
+                                <i class="fas fa-arrow-left"></i>
+                                Browse Other Offers
+                            </button>
+                            <button class="btn-notify-me" onclick="showNotifyModal()">
+                                <i class="fas fa-bell"></i>
+                                Notify Me
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 
     return `
         <div class="offer-hero">
@@ -2012,4 +2064,29 @@ function initializeDropdownEvents() {
         // Initialize state options on page load
         onCountryChange();
     }
+}
+
+function goBackToOffers() {
+    // Navigate back to offers list
+    // You can modify this URL to match your offers listing page
+    window.location.href = './index.html'; // or wherever your offers list is
+    // Alternative: window.history.back(); if you want to go to previous page
+}
+
+function showNotifyModal() {
+    // Simple notification modal - you can enhance this
+    const message = `
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 16px;">🔔</div>
+            <h3 style="margin-bottom: 12px;">Stay Updated!</h3>
+            <p style="margin-bottom: 20px;">We'll notify you as soon as new offers become available.</p>
+            <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">
+                    <strong>Pro tip:</strong> Follow us on social media or bookmark this page to stay updated with the latest deals!
+                </p>
+            </div>
+        </div>
+    `;
+    
+    showMessage('success', 'Notification Set!', message);
 }
