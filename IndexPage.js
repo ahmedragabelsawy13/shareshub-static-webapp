@@ -85,6 +85,14 @@ function createDealCard(deal) {
     const progress = calculateProgress();
     const timeLeft = getTimeRemaining();
 
+    // Create supplier logo element if logo exists
+    const supplierLogoHtml = deal.supplier?.logo ? `
+    <div class="supplier-logo">
+        <img src="${deal.supplier.logo}" alt="${deal.supplier.name}" class="supplier-logo-img"
+             onerror="this.style.display='none';">
+    </div>
+    ` : '';
+
     return `
                 <div class="deal-card">
                     <div class="image-container">
@@ -92,6 +100,7 @@ function createDealCard(deal) {
                         <div class="discount-badge">-${deal.discount}%</div>
                         <div class="overlay"></div>
                     </div>
+                        ${supplierLogoHtml}
                     <div class="card-content">
                         <!--<h3 class="deal-title">${deal.title} <span>${deal.discount}</span></h3>-->
                         <p class="deal-title"><b style="font-size: 1.25rem; color: var(--secondary);">${deal.supplier.name}</b> UP TO <span style="font-size: 1.75rem; color: var(--primary);"><b>${deal.discount}%</b></span> OFF</p>

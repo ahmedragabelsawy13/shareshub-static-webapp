@@ -151,7 +151,7 @@ body {
 }
 
 .card-content {
-    padding: 24px;
+    padding: 50px 24px 24px 24px;
 }
 
 .deal-title {
@@ -348,4 +348,54 @@ body {
         grid-template-columns: 1fr;
         gap: 24px;
     }
+
+    .supplier-logo {
+        width: 45px;    /* Bigger for mobile too */
+        height: 45px;
+        bottom: -22px;
+        left: 50%;
+    }
+
+    .supplier-logo-img {
+        width: 36px;    /* Increased mobile logo image */
+        height: 36px;
+    }
+
+    .card-content {
+        padding: 45px 24px 24px 24px;  /* Increased mobile padding */
+    }
+}
+
+.supplier-logo {
+    position: absolute;
+    top: 172px;     /* 192px image height - 20px overlap */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+
+.supplier-logo-img {
+    width: 40px;    /* Increased from 32px */
+    height: 40px;   /* Increased from 32px */
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.deal-card:hover .supplier-logo {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.deal-card:hover .supplier-logo-img {
+    transform: scale(1.05);
 }
