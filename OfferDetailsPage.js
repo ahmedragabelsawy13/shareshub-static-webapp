@@ -207,12 +207,13 @@ function createContentCard(content) {
 function renderOfferDetails(data) {
     const offer = data.data;
     const contentsHTML = offer.offerContents.map(content => createContentCard(content)).join('');
-
+console.log('Offer Details:', offer);
     return `
         <div class="offer-hero">
             <div class="hero-content">
                 <div>
-                    <h1 class="hero-title">${offer.title}</h1>
+                    <p class="hero-title"><b style="font-size: 2rem; color: var(--secondary);">${offer.supplier.name}</b> UP TO <span style="font-size: 2.5rem; color: var(--primary);"><b>${offer.discount}%</b></span> OFF</p>
+                    <!--<h1 class="hero-title">${offer.title}</h1>-->
                     <p class="hero-desc">${offer.desc}</p>
                     <!--<div class="pricing-summary">
                         <span class="current-price">${formatPrice(offer.currentPrice)}</span>
