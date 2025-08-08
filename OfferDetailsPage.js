@@ -47,7 +47,10 @@ function getApplicableTier(content, quantity) {
 function updateQuantity(contentId, change) {
     const content = offerData.data.offerContents.find(c => c.id === contentId);
     const currentQty = selectedQuantities[contentId] || 0;
-    const currectMaxQuantityPerUser = content.maxQuantityPerUser - content.numberOfApplicants;
+
+    const totalRemainingUnits = content.maxQuantity - content.numberOfApplicants;
+
+    const currectMaxQuantityPerUser = (totalRemainingUnits > content.maxQuantityPerUser ? content.maxQuantityPerUser : totalRemainingUnits);
     const newQty = Math.max(0, Math.min(currectMaxQuantityPerUser, currentQty + change));
 
     if (newQty !== currentQty) {
