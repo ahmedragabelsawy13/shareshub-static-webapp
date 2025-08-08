@@ -79,7 +79,7 @@ function updateUI() {
 
         if (qtyDisplay) qtyDisplay.textContent = quantity;
         if (minusBtn) minusBtn.disabled = quantity <= 0;
-        if (plusBtn) plusBtn.disabled = quantity >= content.maxQuantityPerUser;
+        if (plusBtn) plusBtn.disabled = quantity >= content.maxQuantityPerUser || (quantity + content.numberOfApplicants) >= content.maxQuantity;
 
         // Update tier cards with current status
         updateTierCards(content, quantity);

@@ -93,7 +93,8 @@ function createDealCard(deal) {
                         <div class="overlay"></div>
                     </div>
                     <div class="card-content">
-                        <h3 class="deal-title">${deal.title}</h3>
+                        <!--<h3 class="deal-title">${deal.title} <span>${deal.discount}</span></h3>-->
+                        <p class="deal-title"><b style="font-size: 1.25rem; color: var(--secondary);">${deal.supplier.name}</b> UP TO <span style="font-size: 1.75rem; color: var(--primary);"><b>${deal.discount}%</b></span> OFF</p>
                         <p class="deal-desc">${deal.desc}</p>
                         
                         <!--<div class="pricing">

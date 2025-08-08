@@ -155,8 +155,8 @@ body {
 }
 
 .deal-title {
-    font-size: 1.25rem;
-    font-weight: bold;
+    font-size: 1rem;
+    /* font-weight: bold; */
     color: var(--dark);
     margin-bottom: 8px;
     transition: color 0.3s ease;
