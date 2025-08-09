@@ -2482,3 +2482,162 @@ body {
         font-size: 0.9rem;
     }
 }
+
+/*ahmed*/
+
+/* Add these additional mobile fixes to your CSS */
+
+/* Ensure phone input group stacks properly on mobile */
+@media (max-width: 768px) {
+    .phone-input-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .country-code-select {
+        min-width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .phone-number-input {
+        width: 100%;
+    }
+    
+    /* Fix modal overflow on mobile */
+    .modal {
+        max-width: 95vw;
+        margin: 10px;
+        max-height: 95vh;
+    }
+    
+    .modal-body {
+        padding: 0 16px 16px 16px;
+        max-height: calc(95vh - 140px);
+        overflow-y: auto;
+    }
+    
+    .modal-header {
+        padding: 16px 16px 0 16px;
+    }
+    
+    .modal-actions {
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        padding: 14px 20px;
+    }
+    
+    /* Fix form grid on mobile */
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-input,
+    .form-select {
+        padding: 12px 14px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Fix dropdown arrow positioning on mobile */
+    .form-select {
+        background-size: 14px 14px;
+        background-position: right 10px center;
+        padding-right: 40px;
+    }
+    
+    /* Fix order summary on mobile */
+    .order-summary {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .order-summary-title {
+        font-size: 1rem;
+    }
+    
+    .order-item {
+        padding: 10px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .order-item-pricing {
+        width: 100%;
+        text-align: left;
+        min-width: auto;
+    }
+    
+    .summary-row {
+        font-size: 0.85rem;
+        padding: 4px 0;
+    }
+    
+    .summary-row.highlight {
+        padding: 8px 10px;
+        margin: 6px 0;
+    }
+    
+    .summary-note {
+        font-size: 0.75rem;
+        padding: 10px;
+        margin-top: 12px;
+    }
+}
+
+/* Additional fixes for very small screens */
+@media (max-width: 480px) {
+    .modal {
+        margin: 5px;
+        max-width: calc(100vw - 10px);
+        border-radius: 16px;
+    }
+    
+    .modal-header {
+        padding: 12px 12px 0 12px;
+    }
+    
+    .modal-body {
+        padding: 0 12px 12px 12px;
+    }
+    
+    .modal-actions {
+        padding: 12px;
+    }
+    
+    .modal-title {
+        font-size: 1.3rem;
+    }
+    
+    .modal-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .form-section-title {
+        font-size: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.8rem;
+    }
+    
+    .form-input,
+    .form-select {
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+    
+    .order-summary {
+        padding: 12px;
+    }
+}
