@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR4E35ZH38"></script>
@@ -7,35 +8,156 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-VR4E35ZH38');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Featured Deals - SharesHub</title>
-    <link rel="stylesheet" href="./IndexPage.css">
+    <title>SharesHub - Group Buying Made Easy</title>
+    <link rel="stylesheet" href="./home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-    <section class="section">
+    <!-- Header -->
+    <header class="header">
         <div class="container">
-            <div id="content">
-                <!-- Loading state -->
-                <div class="loading" id="loading">
-                    <div class="header">
-                        <div class="logo-title">
-                            <img src="./SharesHub_Logo.jfif" alt="SharesHub Logo" class="logo" 
-                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23ff8f4d\'/%3E%3Ctext x=\'50\' y=\'55\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ESH%3C/text%3E%3C/svg%3E';">
-                            <div style="width: 256px; height: 32px; background: #e5e7eb; border-radius: 8px; animation: pulse 2s infinite;"></div>
-                        </div>
-                        <div style="width: 384px; height: 16px; background: #e5e7eb; border-radius: 8px; margin: 0 auto; animation: pulse 2s infinite;"></div>
-                    </div>
-                    <div class="spinner"></div>
-                    <p style="color: var(--dark);">Loading amazing deals...</p>
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="./SharesHub_Logo.jfif" alt="SharesHub Logo" class="logo"
+                        onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23ff8f4d\'/%3E%3Ctext x=\'50\' y=\'55\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ESH%3C/text%3E%3C/svg%3E';">
+                    <div class="brand-text">SharesHub</div>
+                </div>
+                <div class="nav-actions">
+                    <!-- <button class="search-btn" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="menu-btn" onclick="toggleMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button> -->
                 </div>
             </div>
         </div>
-    </section>
-    <script src="./IndexPage.js"></script>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Banner Slider Section -->
+            <section class="banner-section">
+                <div class="banner-slider" id="bannerSlider">
+                    <div class="slider-progress" id="sliderProgress"></div>
+                    <div class="slider-container">
+                        <div class="slider-track" id="sliderTrack">
+                            <!-- Banner slides will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    <button class="slider-nav prev" onclick="previousSlide()">‹</button>
+                    <button class="slider-nav next" onclick="nextSlide()">›</button>
+                    <div class="slider-dots" id="sliderDots">
+                        <!-- Dots will be dynamically inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Categories Section -->
+            <section class="categories-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-concierge-bell"></i>
+                        Services
+                    </h2>
+                </div>
+                <div class="horizontal-scroll-container">
+                    <div class="categories-grid" id="servicesGrid">
+                        <!-- Service categories will be dynamically inserted here -->
+                        <div class="loading-placeholder">
+                            <div class="spinner"></div>
+                            <p>Loading services...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Categories Section -->
+            <section class="categories-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-shopping-bag"></i>
+                        Products
+                    </h2>
+                </div>
+                <div class="horizontal-scroll-container">
+                    <div class="categories-grid" id="productsGrid">
+                        <!-- Product categories will be dynamically inserted here -->
+                        <div class="loading-placeholder">
+                            <div class="spinner"></div>
+                            <p>Loading products...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Deals Section -->
+            <section class="deals-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-fire"></i>
+                        Featured Deals
+                    </h2>
+                </div>
+                <div class="horizontal-scroll-container">
+                    <div class="deals-grid" id="dealsGrid">
+                        <!-- Featured deals will be dynamically inserted here -->
+                        <div class="loading-placeholder">
+                            <div class="spinner"></div>
+                            <p>Loading deals...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="./SharesHub_Logo.jfif" alt="SharesHub Logo" class="footer-logo-img">
+                    <div class="footer-brand">SharesHub</div>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/DaliaIraqiDresse" target="_blank" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/shareshub1/" target="_blank" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@shareshub" target="_blank" class="social-link tiktok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://wa.me/+201012304792" target="_blank" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+                <div class="footer-text">
+                    <p>Group buying made easy. Save more when you shop together!</p>
+                    <p>&copy; 2024 SharesHub. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading amazing deals...</p>
+        </div>
+    </div>
+
+    <script src="./home.js"></script>
 </body>
+
 </html>

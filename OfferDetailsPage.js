@@ -2,6 +2,12 @@
 let offerData = null;
 let selectedQuantities = {};
 
+// Coupon State
+let appliedCoupon = null;
+
+const API_URL = 'https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api';
+// const API_URL = 'https://localhost:7255/api';
+
 // Utility Functions
 function formatPrice(price) {
     return `EGP ${parseFloat(price).toFixed(2)}`;
@@ -479,6 +485,20 @@ function closeOrderModal() {
 
     // Clear form errors
     clearFormErrors();
+    
+    // Reset coupon state
+    appliedCoupon = null;
+    const couponInput = document.getElementById('couponCode');
+    const applyBtn = document.getElementById('applyCouponBtn');
+    if (couponInput) {
+        couponInput.disabled = false;
+        couponInput.value = '';
+    }
+    if (applyBtn) {
+        applyBtn.classList.remove('applied');
+        applyBtn.textContent = 'Apply';
+    }
+    clearCouponMessages();
 }
 
 // Enhanced updateOrderSummary function with detailed pricing breakdown
@@ -512,9 +532,18 @@ function updateOrderSummary(selectedItems) {
         `;
     });
 
+    // Calculate coupon discount if applied
+    let couponDiscountAmount = 0;
+    let finalDiscountedPrice = totalDiscountedPrice;
+    
+    if (appliedCoupon) {
+        couponDiscountAmount = (totalDiscountedPrice * appliedCoupon.discount) / 100;
+        finalDiscountedPrice = totalDiscountedPrice - couponDiscountAmount;
+    }
+
     // Calculate deposit (30% of total original price)
     const depositAmount = totalOriginalPrice * 0.3;
-    const remainingAmount = totalDiscountedPrice - depositAmount;
+    const remainingAmount = finalDiscountedPrice - depositAmount;
 
     // Add summary totals section
     summaryHTML += `
@@ -527,6 +556,25 @@ function updateOrderSummary(selectedItems) {
                 <span class="summary-label">Total Discounted Price:</span>
                 <span class="summary-value">${formatPrice(totalDiscountedPrice)}</span>
             </div>
+    `;
+    
+    // Add coupon discount row if coupon is applied
+    if (appliedCoupon && couponDiscountAmount > 0) {
+        summaryHTML += `
+            <div class="summary-row coupon-discount">
+                <span class="summary-label">
+                    Coupon Discount <span class="coupon-code-label">(${appliedCoupon.code})</span>:
+                </span>
+                <span class="summary-value">-${formatPrice(couponDiscountAmount)}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Final Discounted Price:</span>
+                <span class="summary-value">${formatPrice(finalDiscountedPrice)}</span>
+            </div>
+        `;
+    }
+    
+    summaryHTML += `
             <div class="summary-row highlight">
                 <span class="summary-label">Deposit (30% of Original):</span>
                 <span class="summary-value deposit-value">${formatPrice(depositAmount)}</span>
@@ -537,7 +585,10 @@ function updateOrderSummary(selectedItems) {
             </div>
         </div>
         <div class="summary-note">
-            <strong>Note:</strong> The remaining amount shown is an estimate based on the current applied price tier and may change until the offer is considered completed.
+            <strong>Note:</strong> The remaining amount shown is an estimate based on the current applied price tier${appliedCoupon ? ' and coupon discount' : ''} and may change until the offer is considered completed.
+        </div>
+        <div class="summary-note">
+            <strong>Note:</strong> The shipping cost will range between 50 and 60 EGP.
         </div>
     `;
 
@@ -577,7 +628,7 @@ function validateForm() {
     let isValid = true;
     const requiredFields = [
         'firstName', 'lastName', 'phoneNumber', 'country',
-        'state', 'street', 'building', 'apartment', 'floor'
+        'state', 'street', 'building', 'apartment', 'floor', 'email', 'couponCode'
     ];
 
     // Clear previous errors
@@ -830,6 +881,7 @@ async function submitOrder() {
     }
 }
 
+
 function buildOrderData(selectedItems) {
     // Get form data
     const formData = new FormData(document.getElementById('orderForm'));
@@ -855,7 +907,7 @@ function buildOrderData(selectedItems) {
             zipCode: ''
         },
         mobileNumber: phoneNumber,
-        couponCode: formObject.couponCode, // Add coupon code to payload
+        couponCode: appliedCoupon ? appliedCoupon.code : (formObject.couponCode || ''), // Use applied coupon or form input
         offerContents: selectedItems.map(item => ({
             offerContentId: item.contentId,
             quantity: item.quantity
@@ -866,8 +918,8 @@ function buildOrderData(selectedItems) {
 async function submitOrderToAPI(orderData) {
     try {
         // Uncomment this when your API is ready
-        // const url = 'https://localhost:7255/api/Orders/place-validation-order';
-        const url = 'https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Orders/place-validation-order';
+        const url = `${API_URL}/Orders/place-validation-order`;
+
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -907,6 +959,7 @@ async function submitOrderToAPI(orderData) {
 
 // Event Handlers
 function goBack() {
+    // Use browser's native back functionality
     window.history.back();
 }
 
@@ -1140,8 +1193,7 @@ function trackShareEvent(platform) {
 async function fetchOfferDetails(offerId) {
     try {
         // Uncomment this when your API is ready
-        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Offers/${offerId}/details`;
-        // const url = `https://localhost:7255/api/Offers/${offerId}/details`
+        const url = `${API_URL}/Offers/${offerId}/details`;
 
         const response = await fetch(url);
         const result = await response.json();
@@ -1223,6 +1275,7 @@ async function init() {
             setTermsAndConditionHTML(); // Set HTML content first
             initializeDescriptionStates(); // Then initialize collapse states
             initializeDropdownEvents();
+            initializeCouponEvents(); // Initialize coupon events
         }, 100);
 
     } catch (error) {
@@ -1501,9 +1554,8 @@ let currentSurveyId = null;
 async function fetchSurveyData() {
     try {
         console.log('Fetching survey data...'); // Debug log
-        
-        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/5`;
-        // const url = `https://localhost:7255/api/Surveys/3`
+
+        const url = `${API_URL}/Surveys/5`;
 
         const response = await fetch(url);
         
@@ -1710,8 +1762,7 @@ async function submitSurvey() {
             responses: responses
         };
 
-        const url = `https://shareshubapi-gmhbgtcqhef5dfcj.canadacentral-01.azurewebsites.net/api/Surveys/submit`;
-        // const url = `https://localhost:7255/Surveys/submit`
+        const url = `${API_URL}/Surveys/submit`;
 
         // Submit to API
         const response = await fetch(url, {
@@ -2067,10 +2118,7 @@ function initializeDropdownEvents() {
 }
 
 function goBackToOffers() {
-    // Navigate back to offers list
-    // You can modify this URL to match your offers listing page
-    window.location.href = './index.html'; // or wherever your offers list is
-    // Alternative: window.history.back(); if you want to go to previous page
+    window.location.href = './offers.html';
 }
 
 function showNotifyModal() {
@@ -2089,4 +2137,163 @@ function showNotifyModal() {
     `;
     
     showMessage('success', 'Notification Set!', message);
+}
+
+// Apply coupon function
+async function applyCoupon() {
+    const couponInput = document.getElementById('couponCode');
+    const applyBtn = document.getElementById('applyCouponBtn');
+    const errorElement = document.getElementById('couponCode-error');
+    const successElement = document.getElementById('couponCode-success');
+    
+    const couponCode = couponInput.value.trim().toUpperCase();
+    
+    // Clear previous messages
+    clearCouponMessages();
+    
+    if (!couponCode) {
+        showCouponError('Please enter a coupon code');
+        return;
+    }
+    
+    // Show loading state
+    applyBtn.disabled = true;
+    applyBtn.classList.add('loading');
+    
+    try {
+        const result = await validateCoupon(couponCode);
+        
+        if (result.success && result.data.isValid) {
+            // Coupon is valid
+            appliedCoupon = {
+                code: result.data.code,
+                discount: result.data.discount,
+                validFrom: result.data.validFrom,
+                validTo: result.data.validTo
+            };
+            
+            // Update UI
+            if (result.data.discount > 0)
+                showCouponSuccess(`Coupon applied! ${result.data.discount}% discount`);
+            else
+                showCouponSuccess(`Coupon applied!`);
+            applyBtn.classList.add('applied');
+            applyBtn.textContent = 'Applied';
+            couponInput.disabled = true;
+            
+            // Update order summary
+            const selectedItems = getSelectedItems();
+            if (selectedItems.length > 0) {
+                updateOrderSummary(selectedItems);
+            }
+            
+        } else {
+            throw new Error(result.message || 'Invalid coupon code');
+        }
+        
+    } catch (error) {
+        console.error('Coupon validation error:', error);
+        showCouponError(error.message || 'Failed to validate coupon');
+        appliedCoupon = null;
+    } finally {
+        // Reset button state
+        applyBtn.disabled = false;
+        applyBtn.classList.remove('loading');
+    }
+}
+
+// Remove applied coupon
+function removeCoupon() {
+    const couponInput = document.getElementById('couponCode');
+    const applyBtn = document.getElementById('applyCouponBtn');
+    
+    appliedCoupon = null;
+    couponInput.disabled = false;
+    couponInput.value = '';
+    applyBtn.classList.remove('applied');
+    applyBtn.textContent = 'Apply';
+    
+    clearCouponMessages();
+    
+    // Update order summary
+    const selectedItems = getSelectedItems();
+    if (selectedItems.length > 0) {
+        updateOrderSummary(selectedItems);
+    }
+}
+
+// Validate coupon with API
+async function validateCoupon(couponCode) {
+    try {
+        const url = `${API_URL}/Coupons/apply`;
+        
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                couponCode: couponCode
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.succeeded) {
+            return { success: true, data: result.data, message: result.message };
+        } else {
+            throw new Error(result.message || 'Failed to validate coupon');
+        }
+        
+    } catch (error) {
+        throw new Error('Network error: ' + error.message);
+    }
+}
+
+// Helper functions for coupon messages
+function showCouponError(message) {
+    const couponInput = document.getElementById('couponCode');
+    const errorElement = document.getElementById('couponCode-error');
+    
+    if (couponInput) couponInput.classList.add('error');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+}
+
+function showCouponSuccess(message) {
+    const successElement = document.getElementById('couponCode-success');
+    if (successElement) {
+        successElement.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        successElement.classList.add('show');
+    }
+}
+
+function clearCouponMessages() {
+    const couponInput = document.getElementById('couponCode');
+    const errorElement = document.getElementById('couponCode-error');
+    const successElement = document.getElementById('couponCode-success');
+    
+    if (couponInput) couponInput.classList.remove('error');
+    if (errorElement) {
+        errorElement.classList.remove('show');
+        errorElement.textContent = '';
+    }
+    if (successElement) {
+        successElement.classList.remove('show');
+        successElement.textContent = '';
+    }
+}
+
+function initializeCouponEvents() {
+    const couponInput = document.getElementById('couponCode');
+    if (couponInput) {
+        couponInput.addEventListener('input', function() {
+            if (appliedCoupon && this.value.trim().toUpperCase() !== appliedCoupon.code) {
+                removeCoupon();
+            }
+            clearCouponMessages();
+        });
+    }
 }

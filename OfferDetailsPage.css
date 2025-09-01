@@ -95,23 +95,30 @@ body {
 }
 
 .back-btn {
-    /* background: none; */
-    /* border: 2px solid var(--secondary); */
+    background: none;
+    border: 2px solid var(--secondary);
     color: var(--secondary);
-    padding: 10px 15px;
-    margin-right: 50px;
-    /* remove this when you uncomment the back btn*/
+    padding: 8px 16px;
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
 }
 
-/* .back-btn:hover {
+.back-btn:hover {
     background: var(--secondary);
     color: white;
-    transform: translateX(-5px);
-} */
+    transform: translateX(-2px);
+}
+
+.back-btn i {
+    font-size: 0.8rem;
+}
+
 .logo {
     width: 48px;
     height: 48px;
@@ -567,11 +574,6 @@ body {
     color: var(--dark);
     margin-bottom: 8px;
 }
-
-/* .content-desc {
-    color: var(--gray-600);
-    margin-bottom: 12px;
-} */
 
 .content-meta {
     display: flex;
@@ -1659,19 +1661,54 @@ body {
     color: var(--gray-600);
     margin-bottom: 12px;
     transition: all 0.3s ease;
-    overflow: hidden;
+    overflow-y: auto; /* Add scrolling */
+    line-height: 1.5; /* Better readability */
 }
 
 .content-desc.collapsed {
     max-height: 0;
     margin-bottom: 0;
     opacity: 0;
+    overflow: hidden; /* Hide overflow when collapsed */
 }
 
 .content-desc.expanded {
-    max-height: 200px;
+    max-height: 150px; /* Reduced from 200px for better control */
     margin-bottom: 12px;
     opacity: 1;
+    overflow-y: auto; /* Enable scrolling when expanded */
+}
+
+/* Add custom scrollbar styling for the description */
+.content-desc::-webkit-scrollbar {
+    width: 4px;
+}
+
+.content-desc::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 2px;
+}
+
+.content-desc::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: 2px;
+}
+
+.content-desc::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
+
+/* For Firefox */
+.content-desc {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-400) var(--gray-100);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .content-desc.expanded {
+        max-height: 120px; /* Smaller max height on mobile */
+    }
 }
 
 .desc-toggle-btn {
@@ -2875,4 +2912,122 @@ body {
     .modal-body {
         max-height: calc(95vh - 120px);
     }
+}
+
+
+/* Coupon Input Group */
+.coupon-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.coupon-input {
+    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+.coupon-input::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: inherit;
+    font-weight: normal;
+}
+
+.apply-coupon-btn {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(8, 172, 171, 0.3);
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.apply-coupon-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(8, 172, 171, 0.4);
+}
+
+.apply-coupon-btn:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.apply-coupon-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.apply-coupon-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.apply-coupon-btn.applied {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* Success Message */
+.success-message {
+    color: #10b981;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    display: none;
+    font-weight: 600;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.success-message i {
+    margin-right: 4px;
+}
+
+/* Mobile adjustments for coupon input */
+@media (max-width: 768px) {
+    .coupon-input-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .apply-coupon-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Coupon discount row in order summary */
+.summary-row.coupon-discount {
+    background: rgba(16, 185, 129, 0.1);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: 600;
+    color: #10b981;
+}
+
+.coupon-code-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-left: 4px;
 }

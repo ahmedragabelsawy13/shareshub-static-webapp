@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR4E35ZH38"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VR4E35ZH38');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Deals - SharesHub</title>
+    <link rel="stylesheet" href="./offers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <div id="content">
+                <!-- Loading state -->
+                <div class="loading" id="loading">
+                    <!-- Back button at top left -->
+                    <button class="back-btn-fixed" onclick="goBackToHome()">
+                        <i class="fas fa-arrow-left"></i>
+                        Home
+                    </button>
+
+                    <!-- Rest of existing loading content -->
+                    <div class="header">
+                        <!-- existing header content -->
+                    </div>
+                    <div class="spinner"></div>
+                    <p style="color: var(--dark);">Loading amazing deals...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="./offers.js"></script>
+</body>
+
+</html>

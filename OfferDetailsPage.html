@@ -23,7 +23,10 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <span class="back-btn"></span>
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                
+            </button>
             <img src="./SharesHub_Logo.jfif" alt="SharesHub Logo" class="logo"
                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23ff8f4d\'/%3E%3Ctext x=\'50\' y=\'55\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\' font-weight=\'bold\'%3ESH%3C/text%3E%3C/svg%3E';">
             <h1 class="header-title">Offer Details</h1>
@@ -121,8 +124,8 @@
                                 <div class="error-message" id="lastName-error"></div>
                             </div>
                             <div class="form-group full-width">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" id="email" name="email" class="form-input">
+                                <label for="email" class="form-label required">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
                                 <div class="error-message" id="email-error"></div>
                             </div>
 
@@ -186,9 +189,15 @@
                             </div> -->
 
                             <div class="form-group full-width">
-                                <label for="couponCode" class="form-label">Coupon Code</label>
-                                <input type="text" id="couponCode" name="couponCode" class="form-input">
+                                <label for="couponCode" class="form-label required">Coupon Code</label>
+                                <div class="coupon-input-group">
+                                    <input type="text" id="couponCode" name="couponCode" class="form-input coupon-input" required>
+                                    <button type="button" class="apply-coupon-btn" id="applyCouponBtn" onclick="applyCoupon()">
+                                        Apply
+                                    </button>
+                                </div>
                                 <div class="error-message" id="couponCode-error"></div>
+                                <div class="success-message" id="couponCode-success"></div>
                             </div>
                         </div>
                     </div>
