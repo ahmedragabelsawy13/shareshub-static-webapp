@@ -667,8 +667,8 @@ function validateForm() {
 
             if (fieldName === 'couponCode') {
                 // Basic coupon code validation (alphanumeric, minimum 3 characters)
-                if (value.length < 3) {
-                    showFieldError(fieldName, 'Coupon code must be at least 3 characters long');
+                if (value.length < 2) {
+                    showFieldError(fieldName, 'Coupon code must be at least 2 characters long');
                     isValid = false;
                 } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
                     showFieldError(fieldName, 'Coupon code can only contain letters and numbers');
